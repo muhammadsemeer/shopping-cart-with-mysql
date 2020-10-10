@@ -1,0 +1,27 @@
+<div class="container">
+  {{#each products}}
+    <div class="card-container">
+      <div class="img-container">
+        <img src="{{this.image}}" alt="" />
+      </div>
+      <div class="card-content">
+        <h1 class="name">
+          {{this.name}}
+        </h1>
+        <h2 class="category">
+          {{this.category}}
+        </h2>
+        <p class="description">
+          {{this.description}}
+        </p>
+        <p class="price">
+          {{this.price}}
+          /-
+        </p>
+        <button>
+          Add to Cart
+        </button>
+      </div>
+    </div>
+  {{/each}}
+</div>

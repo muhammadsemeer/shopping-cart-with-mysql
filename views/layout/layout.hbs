@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Shopping Cart</title>
+    <link rel='stylesheet' href="/stylesheets/style.css" />
+  </head>
+  <body>
+    {{#if admin}}
+      {{> admin-header}}
+    {{else}}
+    {{> user-header}}
+    {{/if}}
+{{{body}}}
+ </body>
+</html>

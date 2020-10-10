@@ -1,0 +1,44 @@
+<div class="table-container">
+  <table>
+    <thead>
+      <tr>
+        <th>
+          Name
+        </th>
+        <th>
+          Category
+        </th>
+        <th>
+          Description
+        </th>
+        <th>
+          Image
+        </th>
+        <th>
+          Price
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each products}}
+        <tr>
+          <td>
+            {{this.name}}
+          </td>
+          <td>
+            {{this.category}}
+          </td>
+          <td>
+            {{this.description}}
+          </td>
+          <td>
+            <img src="{{this.image}}" />
+          </td>
+          <td>
+            {{this.price}}
+          </td>
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</div>
