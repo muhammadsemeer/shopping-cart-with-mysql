@@ -4,15 +4,30 @@
       Shopping Cart
     </a>
     <div class="nav-links">
-      <a href="/"
-        Product
-      </a>
-      <a href="#">
-        Cart
-      </a>
-      <a href="#">
-        Order
-      </a>
+      <a href="/">All Product </a>
+        <a href="#">
+         My Cart
+        </a>
+        {{#if user}}
+        <a href="#">
+         My Orders
+        </a>
+        {{/if}}
     </div>
+    <div class="dropdown">
+      {{#if user}}
+      <button onclick="myFunction()" class="dropbtn">{{user.name}}</button>
+      <div id="myDropdown" class="dropdown-content">
+        <a href="/logout">Logout</a>
+      </div>
+        {{else}}
+      <button onclick="myFunction()" class="dropbtn">Account</button>
+      <div id="myDropdown" class="dropdown-content">
+      <a href="/login">Login</a>
+      </div>
+      {{/if}}
+    </div>
+  
+  </div>
   </div>
 </header>

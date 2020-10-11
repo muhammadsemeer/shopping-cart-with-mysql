@@ -3,6 +3,12 @@
     <thead>
       <tr>
         <th>
+          Product ID
+        </th>
+        <th>
+          Image
+        </th>
+        <th>
           Name
         </th>
         <th>
@@ -10,9 +16,6 @@
         </th>
         <th>
           Description
-        </th>
-        <th>
-          Image
         </th>
         <th>
           Price
@@ -23,6 +26,12 @@
       {{#each products}}
         <tr>
           <td>
+            {{this.productid}}
+          </td>
+          <td>
+            <img src="./images/product-images/{{this.productid}}.jpg" />
+          </td>
+          <td>
             {{this.name}}
           </td>
           <td>
@@ -32,10 +41,7 @@
             {{this.description}}
           </td>
           <td>
-            <img src="{{this.image}}" />
-          </td>
-          <td>
-            {{this.price}}
+            {{this.price}}/-
           </td>
         </tr>
       {{/each}}

@@ -1,41 +1,52 @@
+const { response } = require("express");
 var express = require("express");
+const session = require("express-session");
 var router = express.Router();
+var productHelpers = require("../helpers/product-helpers");
+var userHelpers = require("../helpers/user-helpers");
 
 /* GET home page. */
-router.get("/", function (req, res, next) {
-    let products = [
-        {
-            name: "Samsung Galaxy A7 (2018)",
-            category: "Smart Phone",
-            description:
-                "Samsung Galaxy A7 (2018) · Display 6.00-inch (1080x2220) · Processor 2.2GHz octa-core · Front Camera 24MP · Rear Camera 24MP + 8MP + 5MP · RAM 4GB.",
-            price: 28999,
-            image: "/images/samsung-galaxy-a7-sm-a750f.jpg",
-        },
-        {
-            name: "Samsung Galaxy Note 20",
-            category: "Smart Phone",
-            description: "Something .................",
-            price: 158999,
-            image: "/images/samsung-galaxy-note20ultra.jpg",
-        },
-        {
-            name: "Boat Headphone",
-            category: "Mobile Accessories",
-            description: "Something.............",
-            price: 1599,
-            image: "/images/boat.jpg",
-        },
-        {
-            name: "Apple I Phone 11 Max Pro",
-            category: "Smart Phone",
-            description: "Something.....",
-            price: 148999,
-            image: "/images/iphone11promax.jpg",
-        },
-    ];
-
-    res.render("index", { products });
+router.get("/", (req, res) => {
+    let user = req.session.user;
+    productHelpers.getAllProducts().then((products) => {
+        res.render("user/view-products", { products, user });
+    });
+});
+router.get("/login", (req, res) => {
+    if (req.session.loggedIn) {
+        res.redirect("/");
+    } else {
+        res.render("user/login");
+    }
+});
+router.get("/signup", (req, res) => {
+    res.render("user/signup");
+});
+router.post("/signup", (req, res) => {
+    userHelpers.doSignup(req.body).then((response) => {
+        if (response.status) {
+            req.session.loggedIn = true;
+            req.session.user = response.user;
+            res.redirect("/");
+        } else {
+            res.render("user/signup", { response });
+        }
+    });
+});
+router.post("/login", (req, res) => {
+    userHelpers.doLogin(req.body).then((response) => {
+        if (response.status) {
+            req.session.loggedIn = true;
+            req.session.user = response.user;
+            res.redirect("/");
+        } else {
+            res.render("user/login", { response });
+        }
+    });
+});
+router.get("/logout", (req, res) => {
+    req.session.destroy();
+    res.redirect("/");
 });
 
 module.exports = router;
