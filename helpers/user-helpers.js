@@ -1,6 +1,7 @@
 var db = require("../config/connection");
 var tables = require("../config/tables");
 var bcrypt = require("bcrypt");
+const { create } = require("express-handlebars");
 module.exports = {
     doSignup: (userData) => {
         var { name, email, password } = userData;
@@ -62,6 +63,55 @@ module.exports = {
                 } else {
                     resolve({ status: false, message: "User doesn't exit" });
                 }
+            });
+        });
+    },
+    addToCart: (prodId, userId) => {
+        let userIdstring = userId.toString();
+        let prodIdint = parseInt(prodId);
+        return new Promise(async (resolve, reject) => {
+            var sql = `select * from t${userIdstring}`;
+            await db.query(sql, (error, result) => {
+                if (error) {
+                    if (
+                        error.sqlMessage ===
+                        `Table 'shopping.t${userIdstring}' doesn't exist`
+                    ) {
+                        sql = `create table t${userIdstring} (prodID int)`;
+                        db.query(sql, (error, result) => {
+                            if (error) throw error;
+                            sql = `insert into t${userIdstring} values(${prodIdint})`;
+                            db.query(sql, (error, result) => {
+                                if (error) throw error;
+                                resolve();
+                            });
+                        });
+                    }
+                } else {
+                    sql = `insert into t${userIdstring} values(${prodIdint})`;
+                    db.query(sql, (error, result) => {
+                        if (error) throw error;
+                        resolve();
+                    });
+                }
+            });
+        });
+    },
+    getCartProducts: (userId) => {
+        return new Promise(async (resolve, reject) => {
+            sql = `select distinct * from ${tables.PRODCUT_TABLE} inner join t${userId} on ${tables.PRODCUT_TABLE}.productid = t${userId}.prodID`;
+            await db.query(sql, (error, result) => {
+                if (error) throw error;
+                resolve(result);
+            });
+        });
+    },
+    getCartCount: (userId) => {
+        return new Promise(async (resolve, reject) => {
+            sql = `select count(*) as count from t${userId}`;
+            await db.query(sql, (error, result) => {
+                if (error) throw error;
+                resolve(result[0].count);
             });
         });
     },

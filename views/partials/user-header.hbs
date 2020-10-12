@@ -5,14 +5,15 @@
     </a>
     <div class="nav-links">
       <a href="/">All Product </a>
-        <a href="#">
-         My Cart
-        </a>
-        {{#if user}}
-        <a href="#">
-         My Orders
-        </a>
-        {{/if}}
+      <a href="/cart" class="notification">
+        <span>Cart</span>
+        <span class="badge">{{count}}</span>
+      </a>
+      {{#if user}}
+      <a href="#">
+        My Orders
+      </a>
+      {{/if}}
     </div>
     <div class="dropdown">
       {{#if user}}
@@ -20,14 +21,14 @@
       <div id="myDropdown" class="dropdown-content">
         <a href="/logout">Logout</a>
       </div>
-        {{else}}
+      {{else}}
       <button onclick="myFunction()" class="dropbtn">Account</button>
       <div id="myDropdown" class="dropdown-content">
-      <a href="/login">Login</a>
+        <a href="/login">Login</a>
       </div>
       {{/if}}
     </div>
-  
+
   </div>
   </div>
 </header>

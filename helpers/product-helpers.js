@@ -18,4 +18,35 @@ module.exports = {
             });
         });
     },
+    deleteProduct: (prodId) => {
+        return new Promise(async (resolve, reject) => {
+            var sql = `delete from ${tables.PRODCUT_TABLE} where productid = ${prodId}`;
+            await db.query(sql, (error, result) => {
+                if (error) throw error;
+                resolve(result);
+            });
+        });
+    },
+    getproductDetails: (prodId) => {
+        return new Promise(async (resolve, reject) => {
+            var prodIdint = parseInt(prodId);
+            var sql = `select * from ${tables.PRODCUT_TABLE} where productid = ${prodIdint}`;
+            await db.query(sql, (error, result) => {
+                if (error) throw error;
+                resolve(result[0]);
+            });
+        });
+    },
+    updateProduct: (product, prodId) => {
+        var { name, category, description, price } = product;
+        price = parseFloat(price);
+        var prodIdint = parseInt(prodId);
+        return new Promise(async (resolve, reject) => {
+            var sql = `update ${tables.PRODCUT_TABLE} set name = '${name}', category= '${category}', description = '${description}', price = ${price} where productid ='${prodIdint}'`;
+            await db.query(sql, (error, result) => {
+                if (error) throw error;
+                resolve(result);
+            });
+        });
+    },
 };

@@ -17,7 +17,7 @@ window.onclick = function (event) {
         }
     }
 };
-var message = document.getElementById("message");
-setTimeout(() => {
-    message.style.visibility = "hidden";
-}, 3000);
+const viewImage = (event) => {
+    var prodimage = document.getElementById("prodimage");
+    prodimage.src = URL.createObjectURL(event.target.files[0]);
+};

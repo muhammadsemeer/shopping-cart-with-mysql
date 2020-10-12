@@ -20,6 +20,9 @@
         <th>
           Price
         </th>
+        <th>
+          Options
+        </th>
       </tr>
     </thead>
     <tbody>
@@ -41,7 +44,22 @@
             {{this.description}}
           </td>
           <td>
-            {{this.price}}/-
+            {{this.price}}
+          </td>
+          <td>
+            <a href="/admin/edit-product/{{this.productid}}">
+              <button class="edit-btn">
+                Edit
+              </button>
+            </a>
+            <a href="/admin/delete-product/{{this.productid}}">
+              <button
+                onclick="return confirm('Do You Want to Delete {{this.name}}?')"
+                class="delete-btn"
+              >
+                Delete
+              </button>
+            </a>
           </td>
         </tr>
       {{/each}}

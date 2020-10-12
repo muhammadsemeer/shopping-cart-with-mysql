@@ -85,6 +85,29 @@ header .navbar {
     border: none;
     border-radius: 10px;
 }
+.notification {
+    color: white;
+    text-decoration: none;
+    padding: 15px;
+    position: relative;
+    display: inline-block;
+    border-radius: 2px;
+}
+
+
+.notification .badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    border-radius: 50%;
+    background: #15eb1c;
+    color: white;
+    width: 25px;
+    height: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
 /* Dropdown Button */
 .dropbtn {
@@ -143,16 +166,22 @@ header .navbar {
     display: block;
 }
 
-.btn {
+.edit-btn,
+.delete-btn {
     margin: 15px 0;
     width: 100px;
     height: 30px;
-    padding: 10px;
     font-size: 15px;
-    background-color: #00ff00;
     color: #fff;
     border: none;
     border-radius: 10px;
+}
+
+.edit-btn {
+    background-color: #006eff;
+}
+.delete-btn {
+    background-color: #ff1e00;
 }
 .table-container {
     margin: 25px auto;
