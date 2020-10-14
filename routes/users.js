@@ -13,15 +13,15 @@ const verfiylogin = (req, res, next) => {
 };
 /* GET home page. */
 router.get("/", async (req, res) => {
-    let user = req.session.user;
-    let count = 0;
-    if (user) {
-        count = await userHelpers.getCartCount(req.session.user.userid);
-    }
-    productHelpers.getAllProducts().then((products) => {
-        res.render("user/view-products", { products, user, count });
-    });
-    res.render("user/view");
+    // let user = req.session.user;
+    // let count = 0;
+    // if (user) {
+    //     count = await userHelpers.getCartCount(req.session.user.userid);
+    // }
+    // productHelpers.getAllProducts().then((products) => {
+    //     res.render("user/view-products", { products, user, count });
+    // });
+    res.render("user/view-products");
 });
 router.get("/login", (req, res) => {
     if (req.session.loggedIn) {
