@@ -19,3 +19,7 @@ const addToCart = (prodId) => {
             }
         });
 };
+const toggleMenu = () => {
+    var menu = document.getElementById("menu");
+    menu.classList.toggle("active");
+};

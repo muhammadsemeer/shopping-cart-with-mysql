@@ -31,10 +31,86 @@ header .navbar {
 .navbar .logo {
     font-weight: bold;
 }
+.menu {
+    display: none;
+    text-decoration: none;
+    margin-right: 15px;
+    color: #00a3ff;
+    font-size: 18px;
+}
+.menu-container {
+    width: 100%;
+    height: 100vh;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    position: absolute;
+    background-color: #00a3ff;
+    z-index: 11;
+    font-family: "Comfortaa", Tahoma, Geneva, Verdana, sans-serif;
+    opacity: 0;
+    visibility: hidden;
+    transition: 1s ease-in-out;
+    overflow: hidden;
+}
+.menu-container a {
+    color: #fff;
+    text-decoration: none;
+    margin: 15px 0;
+    font-size: 20px;
+}
+.menu-container span {
+    padding: 25px;
+    font-size: 40px;
+    position: absolute;
+    top: 0;
+    right: 0;
+}
 
+.menu-container.active {
+    opacity: 1;
+    visibility: visible;
+}
+.menu-container .notification {
+    color: white;
+    background-color: #00a3ff;
+    text-decoration: none;
+    padding: 10px;
+    position: relative;
+    display: inline-block;
+    border-radius: 50px;
+}
+
+.menu-container .notification span {
+    color: #fff;
+    font-size: 20px;
+    padding: 0;
+}
+
+.menu-container .notification .badge {
+    position: absolute;
+    top: -20px;
+    right: -25px;
+    border-radius: 5px;
+    background: #fff;
+    color: #00a3ff;
+    width: 25px;
+    height: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.menu-container .add-product {
+    background-color: #fff;
+    color: #00a3ff;
+    padding: 15px;
+    border-radius: 50px;
+}
 .container {
     width: 100%;
-    margin: 0;
+    margin: 0 0 50px 0;
     font-family: "Montserrat", Tahoma, Geneva, Verdana, sans-serif;
     overflow: hidden;
     display: block;
@@ -115,6 +191,7 @@ header .navbar {
     display: flex;
     justify-content: center;
     align-items: center;
+    height: 90vh;
 }
 .login-form {
     border: 1px solid #00a3ff;
@@ -122,13 +199,14 @@ header .navbar {
     border-radius: 50px;
     padding: 25px;
     width: 600px;
-    min-height: 550px;
+    min-height: auto;
     font-family: "Comfortaa", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .login-form form {
     display: flex;
     justify-content: center;
+    align-items: center;
     flex-direction: column;
     font-family: "Comfortaa", Tahoma, Geneva, Verdana, sans-serif;
 }
@@ -146,23 +224,34 @@ header .navbar {
     color: #ff1e00;
 }
 
-.login-form label {
-    font-size: 18px;
-    line-height: 20px;
-    color: #00a3ff;
+.input-section {
+    width: 100%;
+    position: relative;
 }
 
-.login-form input {
+.input-section label {
+    position: absolute;
+    color: #00a3ff;
+    font-size: 15px;
+    left: 25px;
+    top: 7px;
+    padding: 0 5px;
+    background-color: #000;
+}
+
+.input-section input {
     margin: 15px 0;
     padding: 15px 20px;
+    width: 100%;
     border: 1px solid #00a3ff;
     font-size: 20px;
-    color: #fff;
+    color: #00a3ff;
     box-sizing: border-box;
     background: none;
     border-radius: 50px;
     font-family: "Comfortaa", Tahoma, Geneva, Verdana, sans-serif;
 }
+
 
 .login-form a {
     text-decoration: none;
@@ -172,6 +261,7 @@ header .navbar {
 .login-form input[type="submit"] {
     width: 100px;
     height: 50px;
+    margin: 25px 0 0 0;
     padding: 0;
     font-family: "Comfortaa", Tahoma, Geneva, Verdana, sans-serif;
     background-color: #00a3ff;
@@ -194,8 +284,8 @@ header .navbar {
     height: 300px;
     background: #0a0a0a;
     display: flex;
-    justify-content: space-between;
-    padding: 50px;
+    justify-content: space-evenly;
+    align-items: center;
 }
 
 .cart-container .cart-image img {
@@ -280,6 +370,12 @@ header .navbar {
 }
 
 @media (max-width: 990px) {
+    .nav-links {
+        display: none;
+    }
+    .menu {
+        display: inline;
+    }
     .container {
         margin-top: 0;
         width: auto;
@@ -301,5 +397,48 @@ header .navbar {
     .card-container .img-container img {
         width: 250px;
         height: 250px;
+    }
+}
+@media (max-width: 650px) {
+    .login-form {
+        width: 500px;
+    }
+    .login-form h1 {
+        padding-top: 0px;
+        font-size: 25px;
+    }
+}
+@media (max-width: 580px) {
+    .cart-container {
+        width: 400px;
+    }
+}
+@media (max-width: 500px) {
+    .login-form {
+        width: 400px;
+    }
+}
+@media (max-width: 400px) {
+    .login-form {
+        width: 310px;
+    }
+    .cart-container {
+        width: 310px;
+    }
+    .cart-container .cart-image img {
+        width: 150px;
+        height: 150px;
+    }
+    .cart-content h1 {
+        font-size: 24px;
+    }
+    .cart-content p {
+        font-size: 18px;
+    }
+    .cart-content .btn-section button {
+        padding: 10px;
+    }
+    .login-form h1 {
+        padding: 0;
     }
 }

@@ -1,3 +1,18 @@
+<div class="menu-container" id="menu">
+  <span onclick="toggleMenu()">&times;</span>
+  <a href="/admin">
+    All Product
+  </a>
+  <a href="#">
+    All Orders
+  </a>
+  <a href="#">
+    All Users
+  </a>
+  <a href="/admin/add-product" class="add-product">
+    Add Product
+  </a>
+</div>
 <header>
   <div class="navbar">
     <a href="/admin" class="logo">
@@ -14,8 +29,11 @@
         All Users
       </a>
       <a href="/admin/add-product" class="notification">
-       <span>Add Product</span>
+        <span>Add Product</span>
       </a>
+    </div>
+    <div class="menu">
+      <i class="fas fa-bars" onclick="toggleMenu()"></i>
     </div>
   </div>
 </header>

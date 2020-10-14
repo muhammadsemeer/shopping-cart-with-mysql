@@ -7,14 +7,18 @@
       {{error}}
     </h4>
     <form action="/login" method="post" autocomplete="off">
-      <label>
-        Email
-      </label>
-      <input type="email" name="email" required />
-      <label>
-        Password
-      </label>
-      <input type="password" name="password" required />
+      <div class="input-section">
+        <input type="email" name="email" required />
+        <label for="email">
+          Email
+        </label>
+      </div>
+      <div class="input-section">
+        <input type="password" name="password" required />
+        <label >
+          Password
+        </label>
+      </div>
       <a href="/signup">
         Don't Have a Account ?
       </a>

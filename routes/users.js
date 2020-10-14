@@ -13,14 +13,15 @@ const verfiylogin = (req, res, next) => {
 };
 /* GET home page. */
 router.get("/", async (req, res) => {
-    let user = req.session.user;
-    let count = 0;
-    if (user) {
-        count = await userHelpers.getCartCount(req.session.user.userid);
-    }
-    productHelpers.getAllProducts().then((products) => {
-        res.render("user/view-products", { products, user, count });
-    });
+    // let user = req.session.user;
+    // let count = 0;
+    // if (user) {
+    //     count = await userHelpers.getCartCount(req.session.user.userid);
+    // }
+    // productHelpers.getAllProducts().then((products) => {
+    //     res.render("user/view-products", { products, user, count });
+    // });
+    res.render("user/view");
 });
 router.get("/login", (req, res) => {
     if (req.session.loggedIn) {
@@ -83,7 +84,7 @@ router.get("/cart", verfiylogin, async (req, res) => {
     //     console.log(result);
     // });
 
-    res.render("user/cart", { product, user, count});
+    res.render("user/cart", { product, user, count });
 });
 
 router.get("/add-to-cart/:id", (req, res) => {

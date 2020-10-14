@@ -1,25 +1,44 @@
+<div class="menu-container" id="menu">
+  <span onclick="toggleMenu()">&times;</span>
+  {{#if user}}
+  <a href="#">
+    Hi, {{user.name}}
+  </a>
+  <a href="#">
+    My Orders
+  </a>
+  <a href="/cart" class="notification">
+    <span>Cart</span>
+    <span class="badge" id="cartCount">{{count}}</span>
+  </a>
+  {{else}}
+  <a href="/login">Account</a>
+  {{/if}}
+</div>
 <header>
   <div class="navbar">
     <a href="/" class="logo">
       Shopping Cart
     </a>
     <div class="nav-links">
-      <a href="/">All Product </a>
+      <a href="/">All Products</a>
+      {{#if user}}
       <a href="/cart" class="notification">
         <span>Cart</span>
         <span class="badge" id="cartCount">{{count}}</span>
       </a>
-      {{#if user}}
       <a href="#">
         My Orders
       </a>
       <a href="#">
-        Hi, {{user.name}} 
+        Hi, {{user.name}}
       </a>
       {{else}}
       <a href="/login">Account</a>
       {{/if}}
     </div>
-  </div>
+    <div class="menu">
+      <i class="fas fa-bars" onclick="toggleMenu()"></i>
+    </div>
   </div>
 </header>

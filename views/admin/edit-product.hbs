@@ -1,19 +1,29 @@
 <div class="login-container">
-<div class="login-form">
-<h1>Edit Product</h1>
-<form action="/admin/edit-product/{{product.productid}}" enctype="multipart/form-data" method="POST">
-    <label>Name</label>
-    <input type="text" name="name" value="{{product.name}}">
-    <label>Category</label>
-    <input type="text" name="category" value="{{product.category}}">
-    <label>Description</label>
-    <input type="text" name="description" value="{{product.description}}">
-    <label>Price</label>
-    <input type="number" name="price" value="{{product.price}}">
-    <label>Image</label>
-    <img src="/images/product-images/{{product.productid}}.jpg" style="width: 50px;" id="prodimage" >
-    <input type="file" name="image" onchange="viewImage(event)">
-    <input type="submit" value="Update">
-</form>
-</div>
+    <div class="login-form">
+        <h1>Edit Product</h1>
+        <form action="/admin/edit-product/{{product.productid}}" enctype="multipart/form-data" method="POST">
+            <div class="input-section">
+                <label>Name</label>
+                <input type="text" name="name" value="{{product.name}}">
+            </div>
+            <div class="input-section">
+                <label>Category</label>
+                <input type="text" name="category" value="{{product.category}}">
+            </div>
+            <div class="input-section">
+                <label>Description</label>
+                <input type="text" name="description" value="{{product.description}}">
+            </div>
+            <div class="input-section">
+                <label>Price</label>
+                <input type="number" name="price" value="{{product.price}}">
+            </div>
+            <img src="/images/product-images/{{product.productid}}.jpg" style="width: 100px;" id="prodimage">
+            <div class="input-section">
+                <label>Image</label>
+                <input type="file" name="image" onchange="viewImage(event)">
+            </div>
+            <input type="submit" value="Update">
+        </form>
+    </div>
 </div>

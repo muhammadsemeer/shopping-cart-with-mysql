@@ -2,16 +2,27 @@
     <div class="login-form">
         <h1>Add Product</h1>
         <form action="/admin/add-products" enctype="multipart/form-data" method="POST">
-            <label>Name</label>
+            <div class="input-section">
                 <input type="text" name="name">
-             <label>Category</label>
+                <label>Name</label>
+            </div>
+            <div class="input-section">
+                <label>Category</label>
                 <input type="text" name="category">
-            <label>Description</label>
+            </div>
+            <div class="input-section">
+                <label>Description</label>
                 <input type="text" name="description">
-            <label>Price</label>
+            </div>
+            <div class="input-section">
+                <label>Price</label>
                 <input type="number" name="price">
-            <label>Image</label>
-                <input type="file" name="image">
+            </div>
+            <img src="" style="width: 100px;" id="prodimage">
+            <div class="input-section">
+                <label>Image</label>
+                <input type="file" name="image" onchange="viewImage(event)">
+            </div>
             <input type="submit" value="Add">
         </form>
     </div>
