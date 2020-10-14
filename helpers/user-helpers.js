@@ -47,7 +47,7 @@ module.exports = {
                         .compare(password, result[0].password)
                         .then((status) => {
                             if (status) {
-                                sql = `select userid, name, email from ${tables.USER_TABLE} where email = "${email}"`;
+                                sql = `select userid, name, email, admin from ${tables.USER_TABLE} where email = "${email}"`;
                                 db.query(sql, (error, result) => {
                                     if (error) throw error;
                                     response.user = result[0];

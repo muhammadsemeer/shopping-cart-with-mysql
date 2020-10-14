@@ -159,7 +159,18 @@ header .navbar {
     line-height: 24px;
     color: #ffffff;
 }
-
+.card-content .variants {
+    margin: 50px 0;
+}
+.variants img {
+    margin: 0 25px;
+    width: 100px;
+    height: 100px;
+    transition: 0.25s ease-in-out;
+}
+.variants img:hover {
+    transform: translateY(-10px);
+}
 .notification {
     color: white;
     background-color: #00a3ff;
@@ -191,7 +202,7 @@ header .navbar {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 90vh;
+    min-height: 90vh;
 }
 .login-form {
     border: 1px solid #00a3ff;
@@ -251,7 +262,6 @@ header .navbar {
     border-radius: 50px;
     font-family: "Comfortaa", Tahoma, Geneva, Verdana, sans-serif;
 }
-
 
 .login-form a {
     text-decoration: none;
@@ -416,6 +426,11 @@ header .navbar {
 @media (max-width: 500px) {
     .login-form {
         width: 400px;
+    }
+    .variants img {
+        margin: 0 10px;
+        width: 75px;
+        height: 75px;
     }
 }
 @media (max-width: 400px) {

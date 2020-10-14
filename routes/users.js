@@ -21,7 +21,6 @@ router.get("/", async (req, res) => {
     productHelpers.getAllProducts().then((products) => {
         res.render("user/view-products", { products, user, count });
     });
-    res.render("user/view-products");
 });
 router.get("/login", (req, res) => {
     if (req.session.loggedIn) {

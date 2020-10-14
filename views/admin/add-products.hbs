@@ -3,25 +3,35 @@
         <h1>Add Product</h1>
         <form action="/admin/add-products" enctype="multipart/form-data" method="POST">
             <div class="input-section">
-                <input type="text" name="name">
+                <input type="text" name="name" required>
                 <label>Name</label>
             </div>
             <div class="input-section">
                 <label>Category</label>
-                <input type="text" name="category">
+                <input type="text" name="category" required>
             </div>
             <div class="input-section">
                 <label>Description</label>
-                <input type="text" name="description">
+                <input type="text" name="description" required>
             </div>
             <div class="input-section">
                 <label>Price</label>
-                <input type="number" name="price">
+                <input type="number" name="price" required>
             </div>
-            <img src="" style="width: 100px;" id="prodimage">
+            <img src="" style="width: 100px;" id="prodimage1">
             <div class="input-section">
                 <label>Image</label>
-                <input type="file" name="image" onchange="viewImage(event)">
+                <input type="file" name="image" onchange="viewImage(event,'image1')" required>
+            </div>
+            <img src="" style="width: 100px;" id="prodimage2">
+            <div class="input-section">
+                <label>Image</label>
+                <input type="file" name="image" onchange="viewImage(event, 'image2')" required>
+            </div>
+            <img src="" style="width: 100px;" id="prodimage3">
+            <div class="input-section">
+                <label>Image</label>
+                <input type="file" name="image" onchange="viewImage(event, 'image3')" required>
             </div>
             <input type="submit" value="Add">
         </form>

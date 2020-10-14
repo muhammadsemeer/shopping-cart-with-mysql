@@ -1,10 +1,13 @@
 var db = require("../config/connection");
 var tables = require("../config/tables");
 module.exports = {
-    addProduct: (product, callback) => {
+    addProduct: (product, images, callback) => {
+        console.log(images[0].name);
+        console.log(images[1].name);
+        console.log(images[2].name);
         var { name, category, description, price } = product;
         price = parseFloat(price);
-        var sql = `insert into ${tables.PRODCUT_TABLE} (name,category,description,price) values("${name}","${category}", "${description}", ${price})`;
+        var sql = `insert into ${tables.PRODCUT_TABLE} (name,category,description,price,image1,image2,image3) values("${name}","${category}", "${description}", ${price} ,"${images[0].name}" ,"${images[1].name}" ,"${images[2].name}")`;
         db.query(sql, (error, result) => {
             if (error) throw error;
             callback(result.insertId);
