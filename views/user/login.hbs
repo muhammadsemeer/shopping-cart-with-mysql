@@ -1,22 +1,24 @@
-<div class="login-form">
-  <form action="/login" method="post">
+<div class="login-container">
+  <div class="login-form">
     <h1>
       Login
     </h1>
     <h4>
       {{error}}
     </h4>
-    <label>
-      Email
-    </label>
-    <input type="email" name="email" />
-    <label>
-      Password
-    </label>
-    <input type="password" name="password" />
-    <a href="/signup">
-      Don't Have a Account ?
-    </a>
-    <input type="submit" value="Login" />
-  </form>
+    <form action="/login" method="post" autocomplete="off">
+      <label>
+        Email
+      </label>
+      <input type="email" name="email" required />
+      <label>
+        Password
+      </label>
+      <input type="password" name="password" required />
+      <a href="/signup">
+        Don't Have a Account ?
+      </a>
+      <input type="submit" value="Login" />
+    </form>
+  </div>
 </div>

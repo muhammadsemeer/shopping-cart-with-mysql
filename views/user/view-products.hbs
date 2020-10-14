@@ -1,28 +1,20 @@
 <div class="container">
   {{#each products}}
     <div class="card-container">
-      <div class="img-container">
-        <img src="./images/product-images/{{this.productid}}.jpg" alt="" />
-      </div>
       <div class="card-content">
-        <h1 class="name">
+        <h1  data-aos="fade-left">
           {{this.name}}
         </h1>
-        <h2 class="category">
-          {{this.category}}
-        </h2>
-        <p class="description">
-          {{this.description}}
-        </p>
-        <p class="price">
+        <p  data-aos="fade-right">
+          Rs.
           {{this.price}}
-          /-
         </p>
-        <a href="/add-to-cart/{{this.productid}}">
-          <button>
-            Add to Cart
-          </button>
-        </a>
+        <button onclick="addToCart('{{this.productid}}')" data-aos="zoom-in-up">
+          Add to Cart
+        </button>
+      </div>
+      <div class="img-container"  data-aos="fade-up">
+        <img src="./images/product-images/{{this.productid}}.jpg" alt="" />
       </div>
     </div>
   {{/each}}

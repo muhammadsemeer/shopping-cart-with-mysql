@@ -7,28 +7,19 @@
       <a href="/">All Product </a>
       <a href="/cart" class="notification">
         <span>Cart</span>
-        <span class="badge">{{count}}</span>
+        <span class="badge" id="cartCount">{{count}}</span>
       </a>
       {{#if user}}
       <a href="#">
         My Orders
       </a>
-      {{/if}}
-    </div>
-    <div class="dropdown">
-      {{#if user}}
-      <button onclick="myFunction()" class="dropbtn">{{user.name}}</button>
-      <div id="myDropdown" class="dropdown-content">
-        <a href="/logout">Logout</a>
-      </div>
+      <a href="#">
+        Hi, {{user.name}} 
+      </a>
       {{else}}
-      <button onclick="myFunction()" class="dropbtn">Account</button>
-      <div id="myDropdown" class="dropdown-content">
-        <a href="/login">Login</a>
-      </div>
+      <a href="/login">Account</a>
       {{/if}}
     </div>
-
   </div>
   </div>
 </header>

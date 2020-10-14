@@ -1,16 +1,27 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Shopping Cart</title>
-    <link rel='stylesheet' href="/stylesheets/style.css" />
-  </head>
-  <body>
-    {{#if admin}}
-      {{> admin-header}}
-    {{else}}
-    {{> user-header}}
-    {{/if}}
-{{{body}}}
- </body>
- <script src="/javascripts/script.js"></script>
+
+<head>
+  <title>Shopping Cart</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Comfortaa" />
+  <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+  <link rel='stylesheet' href="/stylesheets/style.css" />
+</head>
+
+<body>
+  {{#if admin}}
+  {{> admin-header}}
+  {{else}}
+  {{> user-header}}
+  {{/if}}
+  {{{body}}}
+  <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+  <script>
+    AOS.init({
+      duration: 1000
+    });
+  </script>
+<script src="/javascripts/script.js"></script>
+</body>
 </html>

@@ -65,15 +65,32 @@ router.get("/logout", (req, res) => {
 
 router.get("/cart", verfiylogin, async (req, res) => {
     let user = req.session.user;
-    let product = await userHelpers.getCartProducts(req.session.user.userid);
-    res.render("user/cart", { product, user });
+    let count = 0;
+    let product = {};
+    let cart = false;
+    let itemCount = null;
+    if (user) {
+        count = await userHelpers.getCartCount(req.session.user.userid);
+    }
+    await userHelpers
+        .getCartProducts(req.session.user.userid)
+        .then(async (response) => {
+            if (response) {
+                product = response.result;
+            }
+        });
+    // await userHelpers.getCartItems(req.session.user.userid).then((result) => {
+    //     console.log(result);
+    // });
+
+    res.render("user/cart", { product, user, count});
 });
 
-router.get("/add-to-cart/:id", verfiylogin, (req, res) => {
+router.get("/add-to-cart/:id", (req, res) => {
     userHelpers
         .addToCart(req.params.id, req.session.user.userid)
         .then((response) => {
-            res.redirect("/");
+            res.json({ status: true });
         });
 });
 

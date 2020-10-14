@@ -1,23 +1,21 @@
-/* When the user clicks on the button,
-toggle between hiding and showing the dropdown content */
-function myFunction() {
-    document.getElementById("myDropdown").classList.toggle("show");
-}
-
-// Close the dropdown menu if the user clicks outside of it
-window.onclick = function (event) {
-    if (!event.target.matches(".dropbtn")) {
-        var dropdowns = document.getElementsByClassName("dropdown-content");
-        var i;
-        for (i = 0; i < dropdowns.length; i++) {
-            var openDropdown = dropdowns[i];
-            if (openDropdown.classList.contains("show")) {
-                openDropdown.classList.remove("show");
-            }
-        }
-    }
-};
 const viewImage = (event) => {
     var prodimage = document.getElementById("prodimage");
     prodimage.src = URL.createObjectURL(event.target.files[0]);
+};
+
+const addToCart = (prodId) => {
+    fetch("http://localhost:3001/add-to-cart/" + prodId, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+        },
+    })
+        .then((res) => res.json())
+        .then((response) => {
+            if (response.status) {
+                let count = document.getElementById("cartCount").innerHTML;
+                count = parseInt(count) + 1;
+                document.getElementById("cartCount").innerHTML = count;
+            }
+        });
 };
