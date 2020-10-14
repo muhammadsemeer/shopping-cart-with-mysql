@@ -2,18 +2,21 @@
   {{#each products}}
     <div class="card-container">
       <div class="card-content">
-        <h1  data-aos="fade-left">
+        <h1 data-aos="fade-left">
           {{this.name}}
         </h1>
-        <p  data-aos="fade-right">
+        <p data-aos="fade-right">
           Rs.
           {{this.price}}
+        </p>
+        <p data-aos="fade-down">
+          {{this.category}}
         </p>
         <button onclick="addToCart('{{this.productid}}')" data-aos="zoom-in-up">
           Add to Cart
         </button>
       </div>
-      <div class="img-container"  data-aos="fade-up">
+      <div class="img-container" data-aos="fade-up">
         <img src="./images/product-images/{{this.productid}}.jpg" alt="" />
       </div>
     </div>

@@ -1,68 +1,38 @@
-<div class="table-container">
-  <table>
-    <thead>
-      <tr>
-        <th>
-          Product ID
-        </th>
-        <th>
-          Image
-        </th>
-        <th>
-          Name
-        </th>
-        <th>
-          Category
-        </th>
-        <th>
-          Description
-        </th>
-        <th>
-          Price
-        </th>
-        <th>
-          Options
-        </th>
-      </tr>
-    </thead>
-    <tbody>
-      {{#each products}}
-        <tr>
-          <td>
-            {{this.productid}}
-          </td>
-          <td>
-            <img src="./images/product-images/{{this.productid}}.jpg" />
-          </td>
-          <td>
-            {{this.name}}
-          </td>
-          <td>
-            {{this.category}}
-          </td>
-          <td>
-            {{this.description}}
-          </td>
-          <td>
-            {{this.price}}
-          </td>
-          <td>
-            <a href="/admin/edit-product/{{this.productid}}">
-              <button class="edit-btn">
-                Edit
-              </button>
-            </a>
-            <a href="/admin/delete-product/{{this.productid}}">
-              <button
-                onclick="return confirm('Do You Want to Delete {{this.name}}?')"
-                class="delete-btn"
-              >
-                Delete
-              </button>
-            </a>
-          </td>
-        </tr>
-      {{/each}}
-    </tbody>
-  </table>
+<div class="cart">
+  {{#each products}}
+    <div class="cart-container">
+      <div class="cart-image">
+        <img src="./images/product-images/{{this.productid}}.jpg" />
+      </div>
+      <div class="cart-content">
+        <h1>
+          {{this.name}}
+        </h1>
+        <p>
+          {{this.category}}
+        </p>
+        <p>
+          {{this.description}}
+        </p>
+        <p>
+         Rs. {{this.price}}
+        </p>
+        <div class="btn-section">
+          <a href="/admin/edit-product/{{this.productid}}">
+            <button>
+              Edit
+            </button>
+          </a>
+          <a href="/admin/delete-product/{{this.productid}}">
+            <button
+              onclick="return confirm('Do You Want to Delete {{this.name}}?')"
+              class="delete-btn"
+            >
+              Delete
+            </button>
+          </a>
+        </div>
+      </div>
+    </div>
+  {{/each}}
 </div>

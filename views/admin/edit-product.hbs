@@ -1,7 +1,8 @@
-<div class="add-products">
+<div class="login-container">
+<div class="login-form">
 <h1>Edit Product</h1>
 <form action="/admin/edit-product/{{product.productid}}" enctype="multipart/form-data" method="POST">
-    <label>Name</label=>
+    <label>Name</label>
     <input type="text" name="name" value="{{product.name}}">
     <label>Category</label>
     <input type="text" name="category" value="{{product.category}}">
@@ -14,4 +15,5 @@
     <input type="file" name="image" onchange="viewImage(event)">
     <input type="submit" value="Update">
 </form>
+</div>
 </div>
