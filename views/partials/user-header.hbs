@@ -7,10 +7,6 @@
   <a href="#">
     My Orders
   </a>
-  <a href="/cart" class="notification">
-    <span>Cart</span>
-    <span class="badge" id="cartCount">{{count}}</span>
-  </a>
   {{else}}
   <a href="/login" class="notification"><span>Login</span></a>
   {{/if}}
@@ -20,35 +16,44 @@
     <a href="/" class="logo">
       Shopping Cart
     </a>
-    <div class="nav-links">
-      <a href="/">All Products</a>
-      {{#if user}}
+    <div>
+      <div class="nav-links">
+        <a href="/">All Products</a>
+        {{#if user}}
+        <a href="#">
+          My Orders
+        </a>
+        <a href="#">
+          Hi, {{user.name}}
+        </a>
+        {{else}}
+        <a href="/login" class="notification">
+          <span>Login</span>
+        </a>
+        {{/if}}
+      </div>
+      {{#if count}}
       <a href="/cart" class="notification">
         <span>Cart</span>
         <span class="badge" id="cartCount">{{count}}</span>
       </a>
-      <a href="#">
-        My Orders
-      </a>
-      <a href="#">
-        Hi, {{user.name}}
-      </a>
       {{else}}
-      <a href="/login" class="notification">
-        <span>Login</span>
+      <a href="/cart" class="notification">
+        <span>Cart</span>
+        <span class="badge" id="cartCount">0</span>
       </a>
       {{/if}}
+      {{#if user}}
+      <div class="menu">
+        <i class="fas fa-bars" onclick="toggleMenu()"></i>
+      </div>
+      {{else}}
+      <div class="menu">
+        <a href="/login" class="notification">
+          <span>Login</span>
+        </a>
+      </div>
+      {{/if}}
     </div>
-    {{#if user}}
-    <div class="menu">
-      <i class="fas fa-bars" onclick="toggleMenu()"></i>
-    </div>
-    {{else}}
-    <div class="menu">
-      <a href="/login" class="notification">
-        <span>Login</span>
-      </a>
-    </div>
-    {{/if}}
   </div>
 </header>

@@ -79,9 +79,6 @@ router.get("/cart", verfiylogin, async (req, res) => {
                 product = response.result;
             }
         });
-    // await userHelpers.getCartItems(req.session.user.userid).then((result) => {
-    //     console.log(result);
-    // });
 
     res.render("user/cart", { product, user, count });
 });
@@ -89,6 +86,21 @@ router.get("/cart", verfiylogin, async (req, res) => {
 router.get("/add-to-cart/:id", (req, res) => {
     userHelpers
         .addToCart(req.params.id, req.session.user.userid)
+        .then((response) => {
+            res.json({ status: true });
+        });
+});
+router.get("/change-quantity/:id/:func", (req, res) => {
+    userHelpers
+        .changeQuantity(req.params.id, req.params.func, req.session.user.userid)
+        .then((response) => {
+            res.json(response);
+        });
+});
+
+router.get("/delete-cart-product/:id", (req, res) => {
+    userHelpers
+        .deleteCartProduct(req.params.id, req.session.user.userid)
         .then((response) => {
             res.json({ status: true });
         });

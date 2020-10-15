@@ -1,49 +1,49 @@
 {{#if product}}
-  <div class="cart">
-    {{#each product}}
-      <div class="cart-container">
-        <div class="cart-image">
-          <img src="./images/product-images/{{this.productid}}.jpg" />
-        </div>
-        <div class="cart-content">
-          <h1>
-            {{this.name}}
-          </h1>
-          <p>
-            Rs .
-            {{this.price}}
-          </p>
-          <div class="btn-section">
-            <button class="count-button">
-              -
-            </button>
-            <span>
-              1
-            </span>
-            <button class="count-button">
-              +
-            </button>
-            <br />
-            <button>
-              Buy now
-            </button>
-            <button class="delete-btn">
-              Delete
-            </button>
-          </div>
-        </div>
+<div class="cart">
+  {{#each product}}
+  <div class="cart-container" id="t{{this.productid}}">
+    <div class="cart-image">
+      <img src="./images/product-images/{{this.image1}}{{this.productid}}.jpg" />
+    </div>
+    <div class="cart-content">
+      <h1>
+        {{this.name}}
+      </h1>
+      <p>
+        Rs .
+        {{this.price}}
+      </p>
+      <div class="btn-section">
+        <button class="count-button" onclick="quantity('{{this.productid}}', 'dnc')">
+          -
+        </button>
+        <span id="{{this.productid}}">
+          {{this.quantity}}
+        </span>
+        <button class="count-button" onclick="quantity('{{this.productid}}', 'inc')">
+          +
+        </button>
+        <br />
+        <button>
+          Buy now
+        </button>
+        <button class="delete-btn" onclick="deleteCartItem('{{this.productid}}','{{this.name}}')">
+          Delete
+        </button>
       </div>
-    {{/each}}
+    </div>
   </div>
+  {{/each}}
+</div>
 <div class="checkout">
   <button>
     Checkout
   </button>
 </div>
 {{else}}
-  <div class="empty">
-    <h1>
-      Cart is Empty
-    </h1>
-  </div>
+<div class="empty">
+  <h1>
+    Cart is Empty
+  </h1>
+</div>
 {{/if}}

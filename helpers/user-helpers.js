@@ -1,7 +1,7 @@
 var db = require("../config/connection");
 var tables = require("../config/tables");
 var bcrypt = require("bcrypt");
-const e = require("express");
+const { resolve } = require("promise");
 var cartproID = [];
 module.exports = {
     doSignup: (userData) => {
@@ -78,18 +78,36 @@ module.exports = {
                         error.sqlMessage ===
                         `Table 'shopping.t${userIdstring}' doesn't exist`
                     ) {
-                        sql = `create table t${userIdstring} (prodID int)`;
+                        sql = `create table t${userIdstring} (prodID int,quantity int)`;
                         db.query(sql, (error, result) => {
                             if (error) throw error;
-                            sql = `insert into t${userIdstring} values(${prodIdint})`;
+                            sql = `insert into t${userIdstring} values(${prodIdint} , 1)`;
                             db.query(sql, (error, result) => {
                                 if (error) throw error;
                                 resolve();
                             });
                         });
                     }
+                } else if (result.length > 0) {
+                    sql = `update t${userIdstring} set quantity = quantity + 1 where prodID = ${prodId}`;
+                    db.query(sql, (error, result) => {
+                        if (error) throw error;
+                        if (
+                            result.message ===
+                            "(Rows matched: 0  Changed: 0  Warnings: 0"
+                        ) {
+                            // console.log("1");
+                            sql = `insert into t${userIdstring} values(${prodIdint} , 1)`;
+                            db.query(sql, (error, result) => {
+                                if (error) throw error;
+                                resolve();
+                            });
+                        } else {
+                            resolve();
+                        }
+                    });
                 } else {
-                    sql = `insert into t${userIdstring} values(${prodIdint})`;
+                    sql = `insert into t${userIdstring} values(${prodIdint} , 1)`;
                     db.query(sql, (error, result) => {
                         if (error) throw error;
                         resolve();
@@ -115,15 +133,13 @@ module.exports = {
                         throw error;
                     }
                 } else {
-                    var sql = `select distinct * from ${tables.PRODCUT_TABLE} inner join t${userId} on ${tables.PRODCUT_TABLE}.productid = t${userId}.prodID`;
+                    var sql = `select * from ${tables.PRODCUT_TABLE} inner join t${userId} on ${tables.PRODCUT_TABLE}.productid = t${userId}.prodID`;
                     await db.query(sql, (error, result) => {
                         if (error) throw error;
                         response.status = true;
                         response.result = result;
                         resolve(response);
-                        for (let i = 0; i < result.length; i++) {
-                            cartproID.push(result[i].prodID);
-                        }
+                        // console.log(result);
                     });
                 }
             });
@@ -144,30 +160,43 @@ module.exports = {
                         throw error;
                     }
                 } else {
-                    sql = `select count(*) as count from t${userId}`;
+                    sql = `select  sum(quantity) as sum from t${userId}`;
                     await db.query(sql, (error, result) => {
                         if (error) throw error;
-                        resolve(result[0].count);
+                        resolve(result[0].sum);
                     });
                 }
             });
         });
     },
-    getCartItems: (userId) => {
-        return new Promise((resolve, reject) => {
-            var itemCount = [];
-            for (let i = 0; i < cartproID.length; i++) {
-                var sql = `select count(*) as count from t${userId} where prodID = ${cartproID[i]}`;
-                query(sql);
-            }
-            async function query(sql) {
-                await db.query(sql, (error, result) => {
+    changeQuantity: (prodId, func, userId) => {
+        return new Promise(async (resolve, reject) => {
+            let userIdstring = userId.toString();
+            let prodIdint = parseInt(prodId);
+            if (func === "inc") {
+                var sql = `update t${userIdstring} set quantity = quantity + 1 where prodID = ${prodIdint}`;
+                db.query(sql, (error, result) => {
                     if (error) throw error;
-                    return itemCount.push(result[0].count);
+                    resolve(true);
+                });
+            } else {
+                var sql = `update t${userIdstring} set quantity = quantity - 1 where prodID = ${prodIdint}`;
+                db.query(sql, (error, result) => {
+                    if (error) throw error;
+                    resolve(false);
                 });
             }
-            console.log(itemCount, "inner query");
-            resolve(itemCount);
+        });
+    },
+    deleteCartProduct: (prodId, userId) => {
+        return new Promise(async (resolve, reject) => {
+            let userIdstring = userId.toString();
+            let prodIdint = parseInt(prodId);
+            var sql = `delete from t${userIdstring} where prodID = ${prodIdint}`;
+            db.query(sql, (error, result) => {
+                if (error) throw error;
+                resolve();
+            });
         });
     },
 };

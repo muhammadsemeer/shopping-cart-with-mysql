@@ -13,17 +13,17 @@ const verifyAdmin = (req, res, next) => {
         res.redirect("/login");
     }
 };
-router.get("/", verifyAdmin, function (req, res, next) {
+router.get("/", /* verifyAdmin ,*/ function (req, res, next) {
     productHelpers.getAllProducts().then((products) => {
         res.render("admin/view-products", { products, admin: true });
     });
 });
 
-router.get("/add-product", verifyAdmin, (req, res) => {
+router.get("/add-product",/* verifyAdmin ,*/ (req, res) => {
     res.render("admin/add-products", { admin: true });
 });
 
-router.post("/add-products", verifyAdmin, (req, res) => {
+router.post("/add-products",/* verifyAdmin ,*/ (req, res) => {
     productHelpers.addProduct(req.body, req.files.image, (id) => {
         let image = req.files.image;
         for (let i = 0; i < image.length; i++) {
@@ -40,32 +40,42 @@ router.post("/add-products", verifyAdmin, (req, res) => {
     });
 });
 
-router.get("/delete-product/:id", verifyAdmin, (req, res) => {
+router.get("/delete-product/:id",/* verifyAdmin, */ (req, res) => {
     let prodId = req.params.id;
     productHelpers.deleteProduct(prodId).then((result) => {
         res.redirect("/admin");
     });
 });
-router.get("/edit-product/:id", verifyAdmin, async (req, res) => {
+router.get("/edit-product/:id",/* verifyAdmin,*/ async (req, res) => {
     let prodId = req.params.id;
     let product = await productHelpers.getproductDetails(prodId);
     res.render("admin/edit-product", { product, admin: true });
 });
-router.post("/edit-product/:id", verifyAdmin, (req, res) => {
+router.post("/edit-product/:id",/* verifyAdmin, */ (req, res) => {
     let id = req.params.id;
     productHelpers.updateProduct(req.body, id).then((response) => {
+        // console.log(response);
         if (req.files) {
-            let image = req.files.image;
-            image.mv("./public/images/product-images/" + id + ".jpg", (err) => {
-                if (!err) {
-                    res.redirect("/admin");
-                } else {
-                    console.log(err);
-                }
-            });
+        //     let image = req.files.image;
+        //     for (let i = 0; i < image.length; i++) {
+        //         image[i].mv(
+        //             "./public/images/product-images/" +
+        //                 image[i].name +
+        //                 id +
+        //                 ".jpg",
+        //             (err) => {
+        //                 if (err) {
+        //                     console.log(err);
+        //                 }
+        //             }
+        //         );
+        //     }
+        //     res.redirect("/admin");
+        console.log("files");
         } else {
-            res.redirect("/admin");
-        }
+        //     res.redirect("/admin");
+        console.log("no files");
+     }
     });
 });
 

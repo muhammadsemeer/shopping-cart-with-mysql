@@ -9,7 +9,6 @@ const viewImage = (event, image) => {
         var prodimage = document.getElementById("prodimage3");
         prodimage.src = URL.createObjectURL(event.target.files[0]);
     }
-    console.log(image);
 };
 
 const addToCart = (prodId) => {
@@ -37,4 +36,93 @@ const changeImage = (imageId, prodId) => {
     var image = document.getElementById(prodId);
     var imageURL = "/images/product-images/" + imageId + prodId + ".jpg";
     image.src = imageURL;
+};
+
+const quantity = (prodId, func) => {
+    let quantity = document.getElementById(prodId).innerHTML;
+    if (quantity == 1 && func == 'dnc') {
+        fetch("http://localhost:3001/delete-cart-product/" + prodId, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        })
+            .then((res) => res.json())
+            .then((response) => {
+                if (response.status) {
+                    id = "t" + prodId;
+                    let item = document.getElementById(id);
+                    item.style.display = "none";
+                    let count = document.getElementById("cartCount").innerHTML;
+                    count = parseInt(count) - 1;
+                    document.getElementById("cartCount").innerHTML = count;
+                }
+            });
+    } else {
+        fetch("http://localhost:3001/change-quantity/" + prodId + "/" + func, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        })
+            .then((res) => res.json())
+            .then((response) => {
+                if (response) {
+                    let quantity = document.getElementById(prodId).innerHTML;
+                    quantity = parseInt(quantity) + 1;
+                    document.getElementById(prodId).innerHTML = quantity;
+                    let count = document.getElementById("cartCount").innerHTML;
+                    count = parseInt(count) + 1;
+                    document.getElementById("cartCount").innerHTML = count;
+                } else {
+                    let quantity = document.getElementById(prodId).innerHTML;
+                    quantity = parseInt(quantity) - 1;
+                    document.getElementById(prodId).innerHTML = quantity;
+                    let count = document.getElementById("cartCount").innerHTML;
+                    count = parseInt(count) - 1;
+                    document.getElementById("cartCount").innerHTML = count;
+                }
+            });
+    }
+};
+
+const deleteCartItem = (prodId, name) => {
+    var con = confirm("Do You Want" + name + "from Your Cart");
+    if (con) {
+        fetch("http://localhost:3001/delete-cart-product/" + prodId, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        })
+            .then((res) => res.json())
+            .then((response) => {
+                if (response.status) {
+                    id = "t" + prodId;
+                    let item = document.getElementById(id);
+                    item.style.display = "none";
+                    let quantity = document.getElementById(prodId).innerHTML;
+                    let count = document.getElementById("cartCount").innerHTML;
+                    count = parseInt(count) - parseInt(quantity);
+                    document.getElementById("cartCount").innerHTML = count;
+                }
+            });
+    }
+};
+var r = [];
+const next = (radid, divid) => {
+    var radio = document.getElementById(radid).checked;
+    var div = document.getElementById(divid);
+    r[0] = "r1" + divid;
+    r[1] = "r2" + divid;
+    r[2] = "r3" + divid;
+    if (radio) {
+        if (radid === r[0]) {
+            div.style.marginLeft = "0";
+        } else if (radid === r[1]) {
+            div.style.marginLeft = "-100%";
+        } else {
+            div.style.marginLeft = "-200%";
+        }
+    }
 };
