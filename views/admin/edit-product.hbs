@@ -16,25 +16,7 @@
             </div>
             <div class="input-section">
                 <label>Price</label>
-                <input type="number" name="price" value="{{product.price}}">
-            </div>
-            <img src="/images/product-images/{{product.image1}}{{product.productid}}.jpg" style="width: 100px;"
-                id="prodimage1">
-            <div class="input-section">
-                <label>Image 1</label>
-                <input type="file" name="image1" onchange="viewImage(event , 'image1')">
-            </div>
-            <img src="/images/product-images/{{product.image2}}{{product.productid}}.jpg" style="width: 100px;"
-                id="prodimage2">
-            <div class="input-section">
-                <label>Image 2</label>
-                <input type="file" name="image" onchange="viewImage(event , 'image2')">
-            </div>
-            <img src="/images/product-images/{{product.image3}}{{product.productid}}.jpg" style="width: 100px;"
-                id="prodimage3">
-            <div class="input-section">
-                <label>Image 3</label>
-                <input type="file" name="image" onchange="viewImage(event, 'image3')">
+                <input type="text" name="price" value="{{product.price}}">
             </div>
             <input type="submit" value="Update">
         </form>

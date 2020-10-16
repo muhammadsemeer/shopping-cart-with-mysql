@@ -11,7 +11,7 @@ const viewImage = (event, image) => {
     }
 };
 
-const addToCart = (prodId) => {
+const addToCart = (prodId, user) => {
     fetch("http://localhost:3001/add-to-cart/" + prodId, {
         method: "GET",
         headers: {
@@ -40,24 +40,28 @@ const changeImage = (imageId, prodId) => {
 
 const quantity = (prodId, func) => {
     let quantity = document.getElementById(prodId).innerHTML;
-    if (quantity == 1 && func == 'dnc') {
-        fetch("http://localhost:3001/delete-cart-product/" + prodId, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-            },
-        })
-            .then((res) => res.json())
-            .then((response) => {
-                if (response.status) {
-                    id = "t" + prodId;
-                    let item = document.getElementById(id);
-                    item.style.display = "none";
-                    let count = document.getElementById("cartCount").innerHTML;
-                    count = parseInt(count) - 1;
-                    document.getElementById("cartCount").innerHTML = count;
-                }
-            });
+    if (quantity == 1) {
+        var co = confirm("Are You Want To Delete The Product ?");
+        if (co) {
+            fetch("http://localhost:3001/delete-cart-product/" + prodId, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            })
+                .then((res) => res.json())
+                .then((response) => {
+                    if (response.status) {
+                        id = "t" + prodId;
+                        let item = document.getElementById(id);
+                        item.style.display = "none";
+                        let count = document.getElementById("cartCount")
+                            .innerHTML;
+                        count = parseInt(count) - 1;
+                        document.getElementById("cartCount").innerHTML = count;
+                    }
+                });
+        }
     } else {
         fetch("http://localhost:3001/change-quantity/" + prodId + "/" + func, {
             method: "GET",
@@ -109,8 +113,8 @@ const deleteCartItem = (prodId, name) => {
             });
     }
 };
-var r = [];
 const next = (radid, divid) => {
+    var r = [];
     var radio = document.getElementById(radid).checked;
     var div = document.getElementById(divid);
     r[0] = "r1" + divid;
@@ -124,5 +128,15 @@ const next = (radid, divid) => {
         } else {
             div.style.marginLeft = "-200%";
         }
+    }
+};
+
+const editImage = () => {
+    var yes = document.getElementById("edit-yes");
+    var no = document.getElementById("edit-no");
+    if (yes.checked) {
+        console.log("Ok");
+    } else if (no.checked) {
+        console.log("no");
     }
 };

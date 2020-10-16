@@ -1,3 +1,4 @@
+const { resolve } = require("promise");
 var db = require("../config/connection");
 var tables = require("../config/tables");
 module.exports = {
@@ -49,6 +50,17 @@ module.exports = {
             await db.query(sql, (error, result) => {
                 if (error) throw error;
                 resolve(result);
+            });
+        });
+    },
+    editProductImage: (details, file) => {
+        var { imageno, prodID } = details;
+        var prodIDint = parseInt(prodID);
+        return new Promise(async (resolve, reject) => {
+            var sql = `update ${tables.PRODCUT_TABLE} set ${imageno} = '${file.name}' where productid = ${prodIDint}`;
+            await db.query(sql, (error, result) => {
+                if (error) throw error;
+                resolve();
             });
         });
     },

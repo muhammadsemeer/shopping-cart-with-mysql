@@ -1,31 +1,21 @@
 <div class="cart">
   {{#each products}}
   <div class="cart-container">
-    <div class="cart-image">
-      <input type="radio" name="radio-btn" id="r1{{this.productid}}"
-        onclick="next('r1{{this.productid}}','{{this.productid}}')" checked="on">
-      <input type="radio" name="radio-btn" id="r2{{this.productid}}"
-        onclick="next('r2{{this.productid}}','{{this.productid}}')">
-      <input type="radio" name="radio-btn" id="r3{{this.productid}}"
-        onclick="next('r3{{this.productid}}','{{this.productid}}')">
+    <div class="cart-admin-image">
       <div class="slide" id="{{this.productid}}">
-        <img src="./images/product-images/{{this.image1}}{{this.productid}}.jpg" />
+        <a href="/admin/edit-images/image1/{{this.productid}}/{{this.image1}}">
+          <img src="./images/product-images/{{this.image1}}{{this.productid}}.jpg" />
+        </a>
       </div>
       <div class="slide">
-        <img src="./images/product-images/{{this.image2}}{{this.productid}}.jpg" />
+        <a href="/admin/edit-images/image2/{{this.productid}}/{{this.image2}}">
+          <img src="./images/product-images/{{this.image2}}{{this.productid}}.jpg" />
+        </a>
       </div>
       <div class="slide">
-        <img src="./images/product-images/{{this.image3}}{{this.productid}}.jpg" />
-      </div>
-      <div class="navigation-auto">
-        <div class="auto-btn1"></div>
-        <div class="auto-btn2"></div>
-        <div class="auto-btn3"></div>
-      </div>
-      <div class="navigation-manual">
-        <label for="r1{{this.productid}}" class="manual-btn"></label>
-        <label for="r2{{this.productid}}" class="manual-btn"></label>
-        <label for="r3{{this.productid}}" class="manual-btn"></label>
+        <a href="/admin/edit-images/image2/{{this.productid}}/{{this.image3}}">
+          <img src="./images/product-images/{{this.image3}}{{this.productid}}.jpg" />
+        </a>
       </div>
     </div>
     <div class="cart-content">
@@ -44,16 +34,16 @@
       <div class="btn-section">
         <a href="/admin/edit-product/{{this.productid}}">
           <button>
-            Edit
+            Edit Details
           </button>
         </a>
-        &nbsp;
-        <a href="/admin/delete-product/{{this.productid}}">
+        <a href="/admin/delete-product/{{this.productid}}/{{this.image1}}/{{this.image2}}/{{this.image3}}">
           <button onclick="return confirm('Do You Want to Delete {{this.name}}?')" class="delete-btn">
             Delete
           </button>
         </a>
       </div>
+      <span>Click the image you want to edit</span>
     </div>
   </div>
   {{/each}}

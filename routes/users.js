@@ -67,8 +67,6 @@ router.get("/cart", verfiylogin, async (req, res) => {
     let user = req.session.user;
     let count = 0;
     let product = {};
-    let cart = false;
-    let itemCount = null;
     if (user) {
         count = await userHelpers.getCartCount(req.session.user.userid);
     }
