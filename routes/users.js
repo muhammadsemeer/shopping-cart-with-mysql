@@ -86,10 +86,10 @@ router.get("/add-to-cart/:id", (req, res) => {
         userHelpers
             .addToCart(req.params.id, req.session.user.userid)
             .then((response) => {
-                // res.json({ status: true });
+                res.json({ status: true });
             });
     } else {
-        res.redirect("/login")
+        res.redirect("/login");
     }
 });
 router.get("/change-quantity/:id/:func", (req, res) => {
@@ -106,6 +106,16 @@ router.get("/delete-cart-product/:id", (req, res) => {
         .then((response) => {
             res.json({ status: true });
         });
+});
+
+router.get("/buy/:prodId", (req, res) => {
+    userHelpers.buyOneItem(req.session.user.userid,req.params.prodId, req.query).then((response) => {
+        res.json({status: true});
+    });
+});
+
+router.get("/myorders", (req, res) => {
+    userHelpers.getMyOrders(req.session.user.userid);
 });
 
 module.exports = router;

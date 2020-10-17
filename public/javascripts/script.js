@@ -11,7 +11,7 @@ const viewImage = (event, image) => {
     }
 };
 
-const addToCart = (prodId, user) => {
+const addToCart = (prodId) => {
     fetch("http://localhost:3001/add-to-cart/" + prodId, {
         method: "GET",
         headers: {
@@ -102,7 +102,7 @@ const deleteCartItem = (prodId, name) => {
             .then((res) => res.json())
             .then((response) => {
                 if (response.status) {
-                    id = "t" + prodId;
+                    var id = "t" + prodId;
                     let item = document.getElementById(id);
                     item.style.display = "none";
                     let quantity = document.getElementById(prodId).innerHTML;
@@ -139,4 +139,26 @@ const editImage = () => {
     } else if (no.checked) {
         console.log("no");
     }
+};
+
+const buyItem = (prodId) => {
+    let quantity = document.getElementById(prodId).innerHTML;
+    fetch("http://localhost:3001/buy/" + prodId + "?quantity=" + quantity, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+        },
+    })
+        .then((res) => res.json())
+        .then((response) => {
+            if (response.status) {
+                alert("Order Placed");
+                var id = "t" + prodId;
+                let item = document.getElementById(id);
+                item.style.display = "none";
+                let count = document.getElementById("cartCount").innerHTML;
+                count = parseInt(count) - parseInt(quantity);
+                document.getElementById("cartCount").innerHTML = count;
+            }
+        });
 };

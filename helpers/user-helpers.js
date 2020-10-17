@@ -1,8 +1,6 @@
 var db = require("../config/connection");
 var tables = require("../config/tables");
 var bcrypt = require("bcrypt");
-const { resolve } = require("promise");
-var cartproID = [];
 module.exports = {
     doSignup: (userData) => {
         var { name, email, password } = userData;
@@ -196,6 +194,23 @@ module.exports = {
             db.query(sql, (error, result) => {
                 if (error) throw error;
                 resolve();
+            });
+        });
+    },
+    buyOneItem: (userId, prodId, query) => {
+        var quantity = parseInt(query.quantity);
+        var userIdInt = parseInt(userId);
+        var prodIdInt = parseInt(prodId);
+        return new Promise(async (resolve, reject) => {
+            var sql = `insert into ${tables.ORDER_TABLE} (userID,prodID,quantity) values(${userIdInt},${prodIdInt},${quantity})`;
+            await db.query(sql, async (error, result) => {
+                if (error) throw error;
+                sql = `delete from t${userId} where prodID = ${prodIdInt}`;
+                await db.query(sql, (error, result) => {
+                    if (error) throw error;
+                    resolve();
+                    console.log(result);
+                });
             });
         });
     },
