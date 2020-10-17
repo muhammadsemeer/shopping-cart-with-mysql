@@ -1,15 +1,17 @@
 <div class="menu-container" id="menu">
   <span onclick="toggleMenu()">&times;</span>
-  {{#if user}}
+  <a href="/">
+    All Products
+  </a>
   <a href="#">
-    Hi, {{user.name}}
+    Account
   </a>
   <a href="#">
     My Orders
   </a>
-  {{else}}
-  <a href="/login" class="notification"><span>Login</span></a>
-  {{/if}}
+  <a id="logout-mobile" href="/logout">
+    Logout
+  </a>
 </div>
 <header>
   <div class="navbar">
@@ -24,7 +26,7 @@
           My Orders
         </a>
         <a href="#">
-          Hi, {{user.name}}
+          Account
         </a>
         {{else}}
         <a href="/login" class="notification">
@@ -44,12 +46,17 @@
       </a>
       {{/if}}
       {{#if user}}
+      <a href="/logout" id="logout-normal" class="notification" onclick="return Do You Want to logout ?">
+        <span>Logout</span>
+      </a>
+      {{/if}}
+      {{#if user}}
       <div class="menu">
         <i class="fas fa-bars" onclick="toggleMenu()"></i>
       </div>
       {{else}}
       <div class="menu">
-        <a href="/login" class="notification">
+        <a href="/login" class="notification" style="margin-right: 0;">
           <span>Login</span>
         </a>
       </div>

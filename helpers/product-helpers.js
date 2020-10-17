@@ -6,9 +6,9 @@ module.exports = {
         console.log(images[0].name);
         console.log(images[1].name);
         console.log(images[2].name);
-        var { name, category, description, price } = product;
+        var { name, brand, category, description, price } = product;
         price = parseFloat(price);
-        var sql = `insert into ${tables.PRODCUT_TABLE} (name,category,description,price,image1,image2,image3) values("${name}","${category}", "${description}", ${price} ,"${images[0].name}" ,"${images[1].name}" ,"${images[2].name}")`;
+        var sql = `insert into ${tables.PRODCUT_TABLE} (name,brand,category,description,price,image1,image2,image3) values("${name}","${brand}","${category}", "${description}", ${price} ,"${images[0].name}" ,"${images[1].name}" ,"${images[2].name}")`;
         db.query(sql, (error, result) => {
             if (error) throw error;
             callback(result.insertId);
@@ -42,11 +42,11 @@ module.exports = {
         });
     },
     updateProduct: (product, prodId) => {
-        var { name, category, description, price } = product;
+        var { name, brand, category, description, price } = product;
         price = parseFloat(price);
         var prodIdint = parseInt(prodId);
         return new Promise(async (resolve, reject) => {
-            var sql = `update ${tables.PRODCUT_TABLE} set name = '${name}', category= '${category}', description = '${description}', price = ${price} where productid ='${prodIdint}'`;
+            var sql = `update ${tables.PRODCUT_TABLE} set name = '${name}', brand = '${brand}' ,category= '${category}', description = '${description}', price = ${price} where productid ='${prodIdint}'`;
             await db.query(sql, (error, result) => {
                 if (error) throw error;
                 resolve(result);

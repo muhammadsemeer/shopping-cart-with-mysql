@@ -9,11 +9,15 @@ body {
     color: #fff;
     margin: 0;
 }
+.body {
+    margin-top: 75px;
+}
 header {
+    position: fixed;
     top: 0;
     width: 100%;
     padding: 25px;
-    z-index: 11;
+    z-index: 10;
     font-family: "Comfortaa", Tahoma, Geneva, Verdana, sans-serif;
 }
 header .navbar {
@@ -49,7 +53,8 @@ header .navbar {
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    position: absolute;
+    position: fixed;
+    top: 0;
     background-color: #00a3ff;
     z-index: 11;
     font-family: "Comfortaa", Tahoma, Geneva, Verdana, sans-serif;
@@ -68,10 +73,13 @@ header .navbar {
     padding: 25px;
     font-size: 40px;
     position: absolute;
+    cursor: pointer;
     top: 0;
     right: 0;
 }
-
+#logout-mobile {
+    display: none;
+}
 .menu-container.active {
     opacity: 1;
     visibility: visible;
@@ -135,7 +143,6 @@ header .navbar {
 .card-content h1 {
     font-weight: 900;
     font-size: 72px;
-    line-height: 88px;
     color: #00a3ff;
 }
 .card-content p {
@@ -166,7 +173,7 @@ header .navbar {
     margin: 50px 0;
 }
 .variants img {
-    margin: 0 25px;
+    margin-right: 25px;
     width: 100px;
     height: 100px;
     transition: 0.25s ease-in-out;
@@ -362,16 +369,14 @@ header .navbar {
     font-style: normal;
     font-weight: 900;
     font-size: 28px;
-    line-height: 34px;
     color: #00a3ff;
 }
 
 .cart-content p {
-    margin: 10px 0;
+    margin: 5px 0;
     font-style: normal;
     font-weight: normal;
     font-size: 20px;
-    line-height: 29px;
     color: #ffffff;
 }
 .cart-content .btn-section a {
@@ -425,7 +430,7 @@ header .navbar {
     padding: 10px;
     width: 150px;
     height: 50px;
-    margin: 25px 0;
+    margin: 25px 10px;
     border-radius: 50px;
     font-style: normal;
     font-weight: normal;
@@ -491,6 +496,12 @@ header .navbar {
     }
 }
 @media (max-width: 500px) {
+    #logout-normal {
+        display: none;
+    }
+    #logout-mobile {
+        display: inline-block;
+    }
     .login-form {
         width: 400px;
     }
@@ -501,9 +512,13 @@ header .navbar {
     }
 }
 @media (max-width: 410px) {
+    header {
+        padding-right: 0;
+        padding-left: 10px;
+    }
     .navbar a {
         margin-right: 10px;
-        font-size: 12px;
+        font-size: 15px;
     }
 }
 @media (max-width: 400px) {
@@ -519,7 +534,7 @@ header .navbar {
     }
     .cart-container .cart-admin-image img {
         width: 50px;
-        height: 50px; 
+        height: 50px;
     }
     .cart-content h1 {
         font-size: 24px;

@@ -5,28 +5,30 @@
       <h1 data-aos="fade-left">
         {{this.name}}
       </h1>
+      <p data-aos="fade-up">
+        {{this.brand}}
+      </p>
       <p data-aos="fade-right">
+        {{this.category}}
+      </p>
+      <p data-aos="fade-down">
         Rs.
         {{this.price}}
       </p>
-      <p data-aos="fade-down">
-        {{this.category}}
-      </p>
-      <button onclick="addToCart('{{this.productid}}','{{user}}')" data-aos="zoom-in-up">
+      <button onclick="addToCart('{{this.productid}}',{{user}})" data-aos="zoom-in-up">
         Add to Cart
       </button>
       <div class="variants" data-aos="fade-down">
         <img onclick="changeImage('{{this.image1}}','{{this.productid}}')"
-          src="./images/product-images/{{this.image1}}{{this.productid}}.jpg" alt="{{this.iamge}} image 1">
+          src="./images/product-images/{{this.image1}}{{this.productid}}.jpg">
         <img onclick="changeImage('{{this.image2}}','{{this.productid}}')"
-          src="./images/product-images/{{this.image2}}{{this.productid}}.jpg" alt="{{this.iamge}} image 2">
+          src="./images/product-images/{{this.image2}}{{this.productid}}.jpg">
         <img onclick="changeImage('{{this.image3}}','{{this.productid}}')"
-          src="./images/product-images/{{this.image3}}{{this.productid}}.jpg" alt="{{this.iamge}} image 3">
+          src="./images/product-images/{{this.image3}}{{this.productid}}.jpg">
       </div>
     </div>
     <div class="img-container" data-aos="fade-up">
-      <img id="{{this.productid}}" src="./images/product-images/{{this.image1}}{{this.productid}}.jpg"
-        alt="{{this.iamge}} image" />
+      <img id="{{this.productid}}" src="./images/product-images/{{this.image1}}{{this.productid}}.jpg" />
     </div>
   </div>
   {{/each}}

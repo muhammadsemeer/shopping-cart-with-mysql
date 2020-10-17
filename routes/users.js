@@ -82,11 +82,15 @@ router.get("/cart", verfiylogin, async (req, res) => {
 });
 
 router.get("/add-to-cart/:id", (req, res) => {
-    userHelpers
-        .addToCart(req.params.id, req.session.user.userid)
-        .then((response) => {
-            res.json({ status: true });
-        });
+    if (req.session.user) {
+        userHelpers
+            .addToCart(req.params.id, req.session.user.userid)
+            .then((response) => {
+                // res.json({ status: true });
+            });
+    } else {
+        res.redirect("/login")
+    }
 });
 router.get("/change-quantity/:id/:func", (req, res) => {
     userHelpers
