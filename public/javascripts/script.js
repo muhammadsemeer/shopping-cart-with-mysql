@@ -11,7 +11,7 @@ const viewImage = (event, image) => {
     }
 };
 
-const addToCart = (prodId) => {
+const addToCart = (prodId, name) => {
     fetch("http://localhost:3001/add-to-cart/" + prodId, {
         method: "GET",
         headers: {
@@ -24,6 +24,10 @@ const addToCart = (prodId) => {
                 let count = document.getElementById("cartCount").innerHTML;
                 count = parseInt(count) + 1;
                 document.getElementById("cartCount").innerHTML = count;
+                alert(name + " added to cart");
+            } else {
+                alert("Please Login to complete the action");
+                window.location = "/login";
             }
         });
 };
@@ -38,10 +42,10 @@ const changeImage = (imageId, prodId) => {
     image.src = imageURL;
 };
 
-const quantity = (prodId, func) => {
+const quantity = (prodId, func, price) => {
     let quantity = document.getElementById(prodId).innerHTML;
-    if (quantity == 1) {
-        var co = confirm("Are You Want To Delete The Product ?");
+    if (quantity == 1 && func === "dnc") {
+        var co = confirm("Do You Want To Delete The Product ?");
         if (co) {
             fetch("http://localhost:3001/delete-cart-product/" + prodId, {
                 method: "GET",
@@ -52,13 +56,18 @@ const quantity = (prodId, func) => {
                 .then((res) => res.json())
                 .then((response) => {
                     if (response.status) {
-                        id = "t" + prodId;
+                        var id = "t" + prodId;
                         let item = document.getElementById(id);
                         item.style.display = "none";
                         let count = document.getElementById("cartCount")
                             .innerHTML;
                         count = parseInt(count) - 1;
                         document.getElementById("cartCount").innerHTML = count;
+                        let total = document.getElementById("total").innerHTML;
+                        total =
+                            parseFloat(total) -
+                            parseInt(quantity) * parseFloat(price);
+                        document.getElementById("total").innerHTML = total;
                     }
                 });
         }
@@ -78,6 +87,9 @@ const quantity = (prodId, func) => {
                     let count = document.getElementById("cartCount").innerHTML;
                     count = parseInt(count) + 1;
                     document.getElementById("cartCount").innerHTML = count;
+                    let total = document.getElementById("total").innerHTML;
+                    total = parseFloat(total) + parseFloat(price);
+                    document.getElementById("total").innerHTML = total;
                 } else {
                     let quantity = document.getElementById(prodId).innerHTML;
                     quantity = parseInt(quantity) - 1;
@@ -85,13 +97,16 @@ const quantity = (prodId, func) => {
                     let count = document.getElementById("cartCount").innerHTML;
                     count = parseInt(count) - 1;
                     document.getElementById("cartCount").innerHTML = count;
+                    let total = document.getElementById("total").innerHTML;
+                    total = parseFloat(total) - parseFloat(price);
+                    document.getElementById("total").innerHTML = total;
                 }
             });
     }
 };
 
-const deleteCartItem = (prodId, name) => {
-    var con = confirm("Do You Want" + name + "from Your Cart");
+const deleteCartItem = (prodId, name, price) => {
+    var con = confirm("Do You Want to delete " + name + " from Your Cart");
     if (con) {
         fetch("http://localhost:3001/delete-cart-product/" + prodId, {
             method: "GET",
@@ -109,6 +124,11 @@ const deleteCartItem = (prodId, name) => {
                     let count = document.getElementById("cartCount").innerHTML;
                     count = parseInt(count) - parseInt(quantity);
                     document.getElementById("cartCount").innerHTML = count;
+                    let total = document.getElementById("total").innerHTML;
+                    total =
+                        parseFloat(total) -
+                        parseInt(quantity) * parseFloat(price);
+                    document.getElementById("total").innerHTML = total;
                 }
             });
     }

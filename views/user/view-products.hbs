@@ -15,16 +15,16 @@
         Rs.
         {{this.price}}
       </p>
-      <button onclick="addToCart('{{this.productid}}',{{user}})" data-aos="zoom-in-up">
+      <button onclick="addToCart('{{this.productid}}','{{this.name}}')" data-aos="zoom-in-up">
         Add to Cart
       </button>
-      <div class="variants" data-aos="fade-down">
+      <div class="variants">
         <img onclick="changeImage('{{this.image1}}','{{this.productid}}')"
-          src="./images/product-images/{{this.image1}}{{this.productid}}.jpg">
+          src="./images/product-images/{{this.image1}}{{this.productid}}.jpg" data-aos="fade-down">
         <img onclick="changeImage('{{this.image2}}','{{this.productid}}')"
-          src="./images/product-images/{{this.image2}}{{this.productid}}.jpg">
+          src="./images/product-images/{{this.image2}}{{this.productid}}.jpg" data-aos="fade-down" data-aos-delay="250">
         <img onclick="changeImage('{{this.image3}}','{{this.productid}}')"
-          src="./images/product-images/{{this.image3}}{{this.productid}}.jpg">
+          src="./images/product-images/{{this.image3}}{{this.productid}}.jpg" data-aos="fade-down" data-aos-delay="500">
       </div>
     </div>
     <div class="img-container" data-aos="fade-up">

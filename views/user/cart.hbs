@@ -14,20 +14,21 @@
         {{this.price}}
       </p>
       <div class="btn-section">
-        <button class="count-button" id="m{{this.productid}}" onclick="quantity('{{this.productid}}', 'dnc')">
+        <button class="count-button" id="m{{this.productid}}"
+          onclick="quantity('{{this.productid}}', 'dnc', '{{this.price}}')">
           -
         </button>
         <span id="{{this.productid}}">
           {{this.quantity}}
         </span>
-        <button class="count-button" onclick="quantity('{{this.productid}}', 'inc')">
+        <button class="count-button" onclick="quantity('{{this.productid}}', 'inc', '{{this.price}}')">
           +
         </button>
         <br />
-        <button onclick="buyItem('{{this.productid}}')">
-          Buy now
-        </button>
-        <button class="delete-btn" onclick="deleteCartItem('{{this.productid}}','{{this.name}}')">
+        {{!-- <button onclick="buyItem('{{this.productid}}')"> --}}
+        {{!-- Buy now --}}
+        {{!-- </button> --}}
+        <button class="delete-btn" onclick="deleteCartItem('{{this.productid}}','{{this.name}}' , '{{this.price}}')">
           Delete
         </button>
       </div>
@@ -36,14 +37,18 @@
   {{/each}}
 </div>
 <div class="checkout">
-  <button>
-    Checkout
-  </button>
+  <div>
+    <h3>Total Amuont</h3>
+    <h3>Rs. <span id="total">{{total}}</span></h3>
+  </div>
+  <a href="/place-order">
+    Place Order
+  </a>
 </div>
 {{else}}
-<div class="empty">
+<di class="empty">
   <h1>
     Cart is Empty
   </h1>
-</div>
+</di>
 {{/if}}

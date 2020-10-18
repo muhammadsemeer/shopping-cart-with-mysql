@@ -15,6 +15,7 @@ body {
 header {
     position: fixed;
     top: 0;
+    background-color: #000;
     width: 100%;
     padding: 25px;
     z-index: 10;
@@ -320,9 +321,6 @@ header .navbar {
     width: 75px;
     height: 75px;
 }
-.cart-image input {
-    display: none;
-}
 .slide {
     width: 100%;
     transition: 2s;
@@ -384,6 +382,7 @@ header .navbar {
 }
 .cart-content .btn-section button {
     background: #00a3ff;
+    color: #fff;
     margin: 15px 0;
     outline: none;
     border: none;
@@ -420,24 +419,30 @@ header .navbar {
     bottom: 0;
     font-family: "Montserrat";
     display: flex;
-    flex-direction: row-reverse;
+    justify-content: space-between;
+    align-items: center;
 }
-.checkout button {
+.checkout div {
+    margin-left: 50px;
+}
+.checkout a {
     font-family: "Montserrat";
+    text-align: center;
+    text-decoration: none;
     background: #00a3ff;
+    color: #fff;
     outline: none;
     border: none;
     padding: 10px;
     width: 150px;
     height: 50px;
-    margin: 25px 10px;
+    margin-right: 25px;
     border-radius: 50px;
     font-style: normal;
     font-weight: normal;
     font-size: 20px;
     line-height: 29px;
 }
-
 @media (max-width: 990px) {
     .nav-links {
         display: none;

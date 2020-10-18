@@ -1,6 +1,4 @@
-const { response } = require("express");
 var express = require("express");
-const session = require("express-session");
 var router = express.Router();
 var productHelpers = require("../helpers/product-helpers");
 var userHelpers = require("../helpers/user-helpers");
@@ -62,10 +60,10 @@ router.get("/logout", (req, res) => {
     req.session.destroy();
     res.redirect("/");
 });
-
+var total;
 router.get("/cart", verfiylogin, async (req, res) => {
     let user = req.session.user;
-    let count = 0;
+    let arr = [];
     let product = {};
     if (user) {
         count = await userHelpers.getCartCount(req.session.user.userid);
@@ -77,8 +75,17 @@ router.get("/cart", verfiylogin, async (req, res) => {
                 product = response.result;
             }
         });
-
-    res.render("user/cart", { product, user, count });
+    for (let i = 0; i < product.length; i++) {
+        arr[i] = product[i].price * product[i].quantity;
+    }
+    if (arr.length > 0) {
+        total = arr.reduce((total, num) => {
+            return total + num;
+        });
+        res.render("user/cart", { product, user, count, total });
+    } else {
+        res.render("user/cart", { product, user, count, total: 0 });
+    }
 });
 
 router.get("/add-to-cart/:id", (req, res) => {
@@ -89,7 +96,7 @@ router.get("/add-to-cart/:id", (req, res) => {
                 res.json({ status: true });
             });
     } else {
-        res.redirect("/login");
+        res.json({ status: false });
     }
 });
 router.get("/change-quantity/:id/:func", (req, res) => {
@@ -108,10 +115,12 @@ router.get("/delete-cart-product/:id", (req, res) => {
         });
 });
 
-router.get("/buy/:prodId", (req, res) => {
-    userHelpers.buyOneItem(req.session.user.userid,req.params.prodId, req.query).then((response) => {
-        res.json({status: true});
-    });
+router.get("/place-order", verfiylogin, (req, res) => {
+    res.render("user/place-order", { total });
+});
+
+router.post("/place-order", verfiylogin, (req, res) => {
+    userHelpers.placeOrder(req.body, req.session.user.userid);
 });
 
 router.get("/myorders", (req, res) => {
