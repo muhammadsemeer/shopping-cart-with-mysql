@@ -132,9 +132,11 @@ router.post("/place-order", verfiylogin, (req, res) => {
 });
 
 router.get("/myorders", verfiylogin, (req, res) => {
+    let arr = {};
     userHelpers.getMyOrders(req.session.user.userid).then((response) => {
         if (response.status) {
-            product = response.result;
+            var product = response.result;
+            res.render("user/my-orders", { product, arr });
         } else {
             res.redirect("/");
         }

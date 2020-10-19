@@ -182,3 +182,10 @@ const buyItem = (prodId) => {
             }
         });
 };
+const total = (id, quantity, price) => {
+    console.log(id);
+    console.log(quantity);
+    console.log(price);
+    var total = parseInt(quantity) * parseInt(price);
+    document.getElementById(id).innerHTML = total;
+};

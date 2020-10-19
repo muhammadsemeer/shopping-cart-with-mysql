@@ -200,12 +200,21 @@ module.exports = {
     placeOrder: (orderDetails, userID) => {
         var { address, mobileno, pincode, paymentmethod } = orderDetails;
         var userIdstring = userID.toString();
+        var orderdate = new Date();
+        var deliverydate = new Date();
+        deliverydate.setDate(deliverydate.getDate() + 7);
         return new Promise(async (resolve, reject) => {
             var sql = `select * from t${userIdstring}`;
             await db.query(sql, (error, result) => {
                 if (error) throw error;
                 result.forEach((data) => {
-                    sql = `insert into ${tables.ORDER_TABLE} (userID, prodID, quantity, deliveryaddress, deliverymobileno, payment,pincode) values (${userIdstring},${data.prodID},${data.quantity},'${address}',${mobileno},'${paymentmethod}',${pincode})`;
+                    sql = `insert into ${
+                        tables.ORDER_TABLE
+                    } (userID, prodID, quantity, orderdate,deliveryaddress, deliverymobileno, deliverydate, payment, pincode) values (${userIdstring},${
+                        data.prodID
+                    },${
+                        data.quantity
+                    },'${orderdate.toDateString()}','${address}',${mobileno},'${deliverydate.toDateString()}','${paymentmethod}',${pincode})`;
                     db.query(sql, (error, result) => {
                         if (error) throw error;
                         sql = `delete from t${userIdstring}`;
