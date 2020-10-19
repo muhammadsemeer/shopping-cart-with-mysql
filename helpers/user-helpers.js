@@ -1,6 +1,7 @@
 var db = require("../config/connection");
 var tables = require("../config/tables");
 var bcrypt = require("bcrypt");
+const { reject } = require("promise");
 module.exports = {
     doSignup: (userData) => {
         var { name, email, password } = userData;
@@ -137,7 +138,6 @@ module.exports = {
                         response.status = true;
                         response.result = result;
                         resolve(response);
-                        // console.log(result);
                     });
                 }
             });
@@ -197,20 +197,40 @@ module.exports = {
             });
         });
     },
-    buyOneItem: (userId, prodId, query) => {
-        var quantity = parseInt(query.quantity);
-        var userIdInt = parseInt(userId);
-        var prodIdInt = parseInt(prodId);
+    placeOrder: (orderDetails, userID) => {
+        var { address, mobileno, pincode, paymentmethod } = orderDetails;
+        var userIdstring = userID.toString();
         return new Promise(async (resolve, reject) => {
-            var sql = `insert into ${tables.ORDER_TABLE} (userID,prodID,quantity) values(${userIdInt},${prodIdInt},${quantity})`;
-            await db.query(sql, async (error, result) => {
+            var sql = `select * from t${userIdstring}`;
+            await db.query(sql, (error, result) => {
                 if (error) throw error;
-                sql = `delete from t${userId} where prodID = ${prodIdInt}`;
-                await db.query(sql, (error, result) => {
-                    if (error) throw error;
-                    resolve();
-                    console.log(result);
+                result.forEach((data) => {
+                    sql = `insert into ${tables.ORDER_TABLE} (userID, prodID, quantity, deliveryaddress, deliverymobileno, payment,pincode) values (${userIdstring},${data.prodID},${data.quantity},'${address}',${mobileno},'${paymentmethod}',${pincode})`;
+                    db.query(sql, (error, result) => {
+                        if (error) throw error;
+                        sql = `delete from t${userIdstring}`;
+                        db.query(sql, (error, result) => {
+                            resolve();
+                        });
+                    });
                 });
+            });
+        });
+    },
+    getMyOrders: (userID) => {
+        let response = {};
+        return new Promise(async (resolve, reject) => {
+            var sql = `select * from ${tables.ORDER_TABLE} inner join ${tables.PRODCUT_TABLE} on ${tables.PRODCUT_TABLE}.productid = ${tables.ORDER_TABLE}.prodID and ${tables.ORDER_TABLE}.userID = ${userID}`;
+            await db.query(sql, (error, result) => {
+                if (error) throw error;
+                if (result.length > 0) {
+                    response.status = true;
+                    response.result = result;
+                    resolve(response);
+                } else {
+                    response.status = false;
+                    resolve(response);
+                }
             });
         });
     },

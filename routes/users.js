@@ -1,3 +1,4 @@
+const { response } = require("express");
 var express = require("express");
 var router = express.Router();
 var productHelpers = require("../helpers/product-helpers");
@@ -115,16 +116,29 @@ router.get("/delete-cart-product/:id", (req, res) => {
         });
 });
 
-router.get("/place-order", verfiylogin, (req, res) => {
-    res.render("user/place-order", { total });
+router.get("/place-order", verfiylogin, async (req, res) => {
+    let user = req.session.user;
+    let count;
+    if (user) {
+        count = await userHelpers.getCartCount(req.session.user.userid);
+    }
+    res.render("user/place-order", { total, user, count });
 });
 
 router.post("/place-order", verfiylogin, (req, res) => {
-    userHelpers.placeOrder(req.body, req.session.user.userid);
+    userHelpers.placeOrder(req.body, req.session.user.userid).then(() => {
+        res.redirect("/");
+    });
 });
 
-router.get("/myorders", (req, res) => {
-    userHelpers.getMyOrders(req.session.user.userid);
+router.get("/myorders", verfiylogin, (req, res) => {
+    userHelpers.getMyOrders(req.session.user.userid).then((response) => {
+        if (response.status) {
+            product = response.result;
+        } else {
+            res.redirect("/");
+        }
+    });
 });
 
 module.exports = router;
