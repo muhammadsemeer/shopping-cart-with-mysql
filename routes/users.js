@@ -128,20 +128,22 @@ router.post("/place-order", verfiylogin, async (req, res) => {
 router.get("/myorders", verfiylogin, (req, res) => {
     let arr = {};
     userHelpers.getMyOrders(req.session.user.userid).then(async (response) => {
-        if (response.status) {
-            var product = response.result;
-            let total = await userHelpers.getTotalAmountOrder(
-                req.session.user.userid
-            );
-            res.render("user/my-orders", {
-                product,
-                arr,
-                total,
-                user: req.session.user,
-            });
-        } else {
-            res.redirect("/");
+        var product = response.result;
+        let total = await userHelpers.getTotalAmountOrder(
+            req.session.user.userid
+        );
+        let user = req.session.user;
+        let count;
+        if (user) {
+            count = await userHelpers.getCartCount(req.session.user.userid);
         }
+        res.render("user/my-orders", {
+            product,
+            arr,
+            total,
+            user,
+            count,
+        });
     });
 });
 

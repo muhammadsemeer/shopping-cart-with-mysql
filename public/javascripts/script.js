@@ -12,7 +12,7 @@ const viewImage = (event, image) => {
 };
 
 const addToCart = (prodId, name) => {
-    fetch("http://localhost:3001/add-to-cart/" + prodId, {
+    fetch("/add-to-cart/" + prodId, {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
@@ -47,7 +47,7 @@ const quantity = (prodId, func, price) => {
     if (quantity == 1 && func === "dnc") {
         var co = confirm("Do You Want To Delete The Product ?");
         if (co) {
-            fetch("http://localhost:3001/delete-cart-product/" + prodId, {
+            fetch("/delete-cart-product/" + prodId, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -72,7 +72,7 @@ const quantity = (prodId, func, price) => {
                 });
         }
     } else {
-        fetch("http://localhost:3001/change-quantity/" + prodId + "/" + func, {
+        fetch("/change-quantity/" + prodId + "/" + func, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -108,7 +108,7 @@ const quantity = (prodId, func, price) => {
 const deleteCartItem = (prodId, name, price) => {
     var con = confirm("Do You Want to delete " + name + " from Your Cart");
     if (con) {
-        fetch("http://localhost:3001/delete-cart-product/" + prodId, {
+        fetch("/delete-cart-product/" + prodId, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -161,27 +161,6 @@ const editImage = () => {
     }
 };
 
-const buyItem = (prodId) => {
-    let quantity = document.getElementById(prodId).innerHTML;
-    fetch("http://localhost:3001/buy/" + prodId + "?quantity=" + quantity, {
-        method: "GET",
-        headers: {
-            "Content-Type": "application/json",
-        },
-    })
-        .then((res) => res.json())
-        .then((response) => {
-            if (response.status) {
-                alert("Order Placed");
-                var id = "t" + prodId;
-                let item = document.getElementById(id);
-                item.style.display = "none";
-                let count = document.getElementById("cartCount").innerHTML;
-                count = parseInt(count) - parseInt(quantity);
-                document.getElementById("cartCount").innerHTML = count;
-            }
-        });
-};
 const total = (id, quantity, price) => {
     console.log(id);
     console.log(quantity);
