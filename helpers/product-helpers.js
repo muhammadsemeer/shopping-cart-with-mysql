@@ -1,4 +1,3 @@
-const { resolve } = require("promise");
 var db = require("../config/connection");
 var tables = require("../config/tables");
 module.exports = {
@@ -18,6 +17,7 @@ module.exports = {
         return new Promise(async (resolve, reject) => {
             var sql = `select * from ${tables.PRODCUT_TABLE}`;
             await db.query(sql, (error, result) => {
+                if (error) throw error;
                 resolve(result);
             });
         });

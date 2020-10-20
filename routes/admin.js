@@ -132,5 +132,10 @@ router.post("/edit-images/:imageno/:prodID/:image", (req, res) => {
         });
     }
 });
+router.get("/allorders", (req, res) => {
+    productHelpers.getAllOrders().then((product) => {
+        res.render("admin/all-orders", { product, admin: true });
+    });
+});
 
 module.exports = router;

@@ -3,7 +3,7 @@
     {{#each product}}
     <div class="my-orders">
         <div class="image-container">
-            <img src="./images/product-images/{{this.image1}}{{this.productid}}.jpg" alt="">
+            <img src="/images/product-images/{{this.image1}}{{this.productid}}.jpg" alt="">
         </div>
         <div class="order-details">
             <h1>Order Details</h1>
@@ -18,8 +18,6 @@
             <h1>Order Status</h1>
             <p>Ordered Date: {{this.orderdate}}</p>
             <p>Payment Method: {{this.payment}}</p>
-            <p>Current Status: {{this.status}}</p>
-            <button>Cancel Order</button>
         </div>
         <div class="delivery-details">
             <h1>Delivery Details</h1>
@@ -31,16 +29,10 @@
     </div>
     {{/each}}
 </div>
-<div class="checkout">
-    <div>
-        <h3>Total Amuont</h3>
-        <h3>Rs. <span id="total">{{total}}</span></h3>
-    </div>
-</div>
 {{else}}
 <div class="empty">
     <h1>
-        You Have No Orders Placed
+        No Orders Yet Placed
     </h1>
 </div>
 {{/if}}
