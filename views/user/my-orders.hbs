@@ -12,7 +12,6 @@
             <p>{{this.brand}}</p>
             <p>Quantity: {{this.quantity}}</p>
             <p>Rs. {{this.price}}</p>
-            <p>Total: <span id="{{this.orderID}}"></span></p>
         </div>
         <div class="order-status">
             <h1>Order Status</h1>
@@ -30,4 +29,10 @@
         </div>
     </div>
     {{/each}}
+</div>
+<div class="checkout">
+    <div>
+        <h3>Total Amuont</h3>
+        <h3>Rs. <span id="total">{{total}}</span></h3>
+    </div>
 </div>

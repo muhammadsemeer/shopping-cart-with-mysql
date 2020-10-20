@@ -197,6 +197,16 @@ module.exports = {
             });
         });
     },
+    getTotalAmountCart: (userId) => {
+        let userIdstring = userId.toString();
+        return new Promise(async (resolve, reject) => {
+            var sql = `select ${tables.PRODCUT_TABLE}.price*t${userIdstring}.quantity as total from ${tables.PRODCUT_TABLE} inner join t${userIdstring} on ${tables.PRODCUT_TABLE}.productid = t${userIdstring}.prodID`;
+            db.query(sql, (error, result) => {
+                if (error) throw error;
+                resolve(result[0].total);
+            });
+        });
+    },
     placeOrder: (orderDetails, userID) => {
         var { address, mobileno, pincode, paymentmethod } = orderDetails;
         var userIdstring = userID.toString();
@@ -240,6 +250,15 @@ module.exports = {
                     response.status = false;
                     resolve(response);
                 }
+            });
+        });
+    },
+    getTotalAmountOrder: (userId) => {
+        return new Promise(async (resolve, reject) => {
+            var sql = `select sum(${tables.PRODCUT_TABLE}.price*${tables.ORDER_TABLE}.quantity) as total from ${tables.PRODCUT_TABLE} inner join ${tables.ORDER_TABLE} on ${tables.ORDER_TABLE}.userID = ${userId} and ${tables.PRODCUT_TABLE}.productid = ${tables.ORDER_TABLE}.prodID`;
+            db.query(sql, (error, result) => {
+                if (error) throw error;
+                resolve(result[0].total);
             });
         });
     },

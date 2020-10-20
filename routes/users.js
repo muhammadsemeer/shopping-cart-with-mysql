@@ -61,7 +61,6 @@ router.get("/logout", (req, res) => {
     req.session.destroy();
     res.redirect("/");
 });
-var total;
 router.get("/cart", verfiylogin, async (req, res) => {
     let user = req.session.user;
     let arr = [];
@@ -76,17 +75,8 @@ router.get("/cart", verfiylogin, async (req, res) => {
                 product = response.result;
             }
         });
-    for (let i = 0; i < product.length; i++) {
-        arr[i] = product[i].price * product[i].quantity;
-    }
-    if (arr.length > 0) {
-        total = arr.reduce((total, num) => {
-            return total + num;
-        });
-        res.render("user/cart", { product, user, count, total });
-    } else {
-        res.render("user/cart", { product, user, count, total: 0 });
-    }
+    let total = await userHelpers.getTotalAmountCart(req.session.user.userid);
+    res.render("user/cart", { product, user, count, total });
 });
 
 router.get("/add-to-cart/:id", (req, res) => {
@@ -122,21 +112,33 @@ router.get("/place-order", verfiylogin, async (req, res) => {
     if (user) {
         count = await userHelpers.getCartCount(req.session.user.userid);
     }
+    let total = await userHelpers.getTotalAmountCart(req.session.user.userid);
     res.render("user/place-order", { total, user, count });
 });
 
-router.post("/place-order", verfiylogin, (req, res) => {
-    userHelpers.placeOrder(req.body, req.session.user.userid).then(() => {
-        res.redirect("/");
-    });
+router.post("/place-order", verfiylogin, async (req, res) => {
+    let total = await userHelpers.getTotalAmountCart(req.session.user.userid);
+    userHelpers
+        .placeOrder(req.body, req.session.user.userid, total)
+        .then(() => {
+            res.redirect("/myorders");
+        });
 });
 
 router.get("/myorders", verfiylogin, (req, res) => {
     let arr = {};
-    userHelpers.getMyOrders(req.session.user.userid).then((response) => {
+    userHelpers.getMyOrders(req.session.user.userid).then(async (response) => {
         if (response.status) {
             var product = response.result;
-            res.render("user/my-orders", { product, arr });
+            let total = await userHelpers.getTotalAmountOrder(
+                req.session.user.userid
+            );
+            res.render("user/my-orders", {
+                product,
+                arr,
+                total,
+                user: req.session.user,
+            });
         } else {
             res.redirect("/");
         }

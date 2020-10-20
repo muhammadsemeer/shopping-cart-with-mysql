@@ -445,6 +445,7 @@ header .navbar {
 .order-container {
     width: 100%;
     display: flex;
+    margin-bottom: 100px;
     justify-content: center;
     align-items: center;
     flex-direction: column;
