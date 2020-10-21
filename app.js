@@ -36,14 +36,14 @@ const connection = () => {
     db.connect((err) => {
         if (err) {
             console.log("error when connecting to db:", err.code);
-            setTimeout(connection, 2000);
+            setTimeout(connection(), 2000);
         } else {
             console.log("Database connected");
         }
     });
     db.on("error", (err) => {
         console.log("db error", err);
-        if (err.code === "PROTOCOL_CONNECTION_LOST") {
+        if (err) {
             connection();
             // Connection to the MySQL server is usually
             // lost due to either server restart, or a
