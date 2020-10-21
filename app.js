@@ -10,6 +10,7 @@ var session = require("express-session");
 
 var adminRouter = require("./routes/admin");
 var usersRouter = require("./routes/users");
+const { commit } = require("./config/connection");
 
 var app = express();
 // view engine setup
@@ -31,12 +32,11 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 app.use(fileUpload());
 app.use(session({ secret: "key", cookie: { maxAge: 2592000000 } }));
-
 const connection = () => {
     db.connect((err) => {
         if (err) {
             console.log("error when connecting to db:", err.code);
-            setTimeout(connection(), 2000);
+            setTimeout(connection, 100);
         } else {
             console.log("Database connected");
         }
