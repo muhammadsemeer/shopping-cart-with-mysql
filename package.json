@@ -1,6 +1,10 @@
 {
-    "name": "handlebars",
-    "version": "0.0.0",
+    "name": "shoppingcart-mysql",
+    "version": "0.1.0",
+    "author": {
+        "name": "Muhammad Semeer",
+        "email": "muhammadsemeerali@gmail.com"
+    },
     "private": true,
     "scripts": {
         "start": "node ./bin/www",

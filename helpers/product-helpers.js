@@ -1,4 +1,6 @@
+const { reject, resolve } = require("promise");
 var db = require("../config/connection");
+const { ORDER_TABLE } = require("../config/tables");
 var tables = require("../config/tables");
 module.exports = {
     addProduct: (product, images, callback) => {
@@ -61,6 +63,33 @@ module.exports = {
             await db.query(sql, (error, result) => {
                 if (error) throw error;
                 resolve();
+            });
+        });
+    },
+    getAllOrders: () => {
+        return new Promise(async (resolve, reject) => {
+            var sql = `select ${tables.ORDER_TABLE}.orderID, ${tables.ORDER_TABLE}.quantity, ${tables.ORDER_TABLE}.orderdate, 
+            ${tables.ORDER_TABLE}.deliveryaddress, ${tables.ORDER_TABLE}.deliverymobileno, ${tables.ORDER_TABLE}.deliverydate, 
+            ${tables.ORDER_TABLE}.payment, ${tables.ORDER_TABLE}.pincode, ${tables.PRODCUT_TABLE}.productid, ${tables.PRODCUT_TABLE}.name as productname, 
+            ${tables.PRODCUT_TABLE}.brand, ${tables.PRODCUT_TABLE}.category, ${tables.PRODCUT_TABLE}.price, ${tables.PRODCUT_TABLE}.image1, 
+            ${tables.USER_TABLE}.userid, ${tables.USER_TABLE}.name as username, ${tables.USER_TABLE}.email, 
+            ${tables.ORDER_TABLE}.quantity*${tables.PRODCUT_TABLE}.price as total from 
+            ((${tables.ORDER_TABLE} inner join ${tables.PRODCUT_TABLE} 
+            on 
+            ${tables.PRODCUT_TABLE}.productid = ${tables.ORDER_TABLE}.prodID) 
+            inner join ${tables.USER_TABLE} on ${tables.USER_TABLE}.userid = ${tables.ORDER_TABLE}.userID)`;
+            await db.query(sql, (error, result) => {
+                if (error) throw error;
+                resolve(result);
+            });
+        });
+    },
+    getAllUsers: () => {
+        return new Promise(async (resolve, reject) => {
+            var sql = `select userid, name, email from ${tables.USER_TABLE}`;
+            db.query(sql, (error, result) => {
+                if (error) throw error;
+                resolve(result);
             });
         });
     },

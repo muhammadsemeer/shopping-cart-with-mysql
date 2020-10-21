@@ -1,26 +1,31 @@
-{{#if product}}
+{{#if response}}
 <div class="order-container">
-    {{#each product}}
+    {{#each response}}
     <div class="my-orders">
         <div class="image-container">
-            <img src="/images/product-images/{{this.image1}}{{this.productid}}.jpg" alt="">
+            <img src="/images/product-images/{{this.image1}}{{this.productid}}.jpg" alt=""
+                style="width: 100px; height: 100px">
         </div>
         <div class="order-details">
-            <h1>Order Details</h1>
-            <p>Order ID: {{this.orderID}}</p>
-            <p>{{this.name}}</p>
-            <p>{{this.category}}</p>
-            <p>{{this.brand}}</p>
+            <h1>Product Details</h1>
+            <p>ID: {{this.orderID}}</p>
+            <p>Name: {{this.productname}}</p>
+            <p>Category: {{this.category}}</p>
+            <p>Brand: {{this.brand}}</p>
             <p>Quantity: {{this.quantity}}</p>
             <p>Rs. {{this.price}}</p>
+            <p>Total: {{this.total}}</p>
         </div>
         <div class="order-status">
-            <h1>Order Status</h1>
-            <p>Ordered Date: {{this.orderdate}}</p>
-            <p>Payment Method: {{this.payment}}</p>
+            <h1>User Deatils</h1>
+            <p>ID: {{this.userid}}</p>
+            <p>Name: {{this.username}}</p>
+            <p>Email: {{this.email}}</p>
         </div>
         <div class="delivery-details">
             <h1>Delivery Details</h1>
+            <p>Ordered Date: {{this.orderdate}}</p>
+            <p>Payment Method: {{this.payment}}</p>
             <p>Delivery Date: {{this.deliverydate}}</p>
             <p>Adresss: {{this.deliveryaddress}}</p>
             <p>Pin Code / Zip Code: {{this.pincode}}</p>

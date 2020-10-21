@@ -133,9 +133,13 @@ router.post("/edit-images/:imageno/:prodID/:image", (req, res) => {
     }
 });
 router.get("/allorders", (req, res) => {
-    productHelpers.getAllOrders().then((product) => {
-        res.render("admin/all-orders", { product, admin: true });
+    productHelpers.getAllOrders().then((response) => {
+        res.render("admin/all-orders", { response, admin: true });
     });
+});
+router.get("/allusers", async (req, res) => {
+    let users = await productHelpers.getAllUsers();
+    res.render("admin/all-users", { users, admin: true });
 });
 
 module.exports = router;

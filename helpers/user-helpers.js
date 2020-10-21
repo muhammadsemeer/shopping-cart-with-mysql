@@ -77,7 +77,7 @@ module.exports = {
                         error.sqlMessage ===
                         `Table 'shopping.t${userIdstring}' doesn't exist`
                     ) {
-                        sql = `create table t${userIdstring} (prodID int,quantity int)`;
+                        sql = `create table t${userIdstring} (prodID bigint,quantity int)`;
                         db.query(sql, (error, result) => {
                             if (error) throw error;
                             sql = `insert into t${userIdstring} values(${prodIdint} , 1)`;
@@ -203,7 +203,11 @@ module.exports = {
             var sql = `select ${tables.PRODCUT_TABLE}.price*t${userIdstring}.quantity as total from ${tables.PRODCUT_TABLE} inner join t${userIdstring} on ${tables.PRODCUT_TABLE}.productid = t${userIdstring}.prodID`;
             db.query(sql, (error, result) => {
                 if (error) throw error;
-                resolve(result[0].total);
+                if (result.length > 0) {
+                    resolve(result[0].total);
+                } else {
+                    resolve()
+                }
             });
         });
     },
@@ -239,7 +243,7 @@ module.exports = {
     getMyOrders: (userID) => {
         let response = {};
         return new Promise(async (resolve, reject) => {
-            var sql = `select * from ${tables.ORDER_TABLE} inner join ${tables.PRODCUT_TABLE} on ${tables.PRODCUT_TABLE}.productid = ${tables.ORDER_TABLE}.prodID and ${tables.ORDER_TABLE}.userID = ${userID}`;
+            var sql = `select *, ${tables.ORDER_TABLE}.quantity*${tables.PRODCUT_TABLE}.price as total from ${tables.ORDER_TABLE} inner join ${tables.PRODCUT_TABLE} on ${tables.PRODCUT_TABLE}.productid = ${tables.ORDER_TABLE}.prodID and ${tables.ORDER_TABLE}.userID = ${userID}`;
             await db.query(sql, (error, result) => {
                 if (error) throw error;
                 if (result.length > 0) {
