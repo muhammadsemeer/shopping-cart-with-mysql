@@ -37,8 +37,9 @@ const connection = () => {
         if (err) {
             console.log("error when connecting to db:", err.code);
             setTimeout(connection, 2000);
+        } else {
+            console.log("Database connected");
         }
-        console.log("Database connected");
     });
     db.on("error", (err) => {
         console.log("db error", err);
@@ -52,6 +53,8 @@ const connection = () => {
         }
     });
 };
+connection();
+
 app.use("/", usersRouter);
 app.use("/admin", adminRouter);
 
