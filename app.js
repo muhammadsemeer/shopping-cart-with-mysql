@@ -36,7 +36,19 @@ db.connect((err) => {
     if (err) throw err;
     console.log("Database connected");
 });
-
+db.on("error", (err) => {
+    console.log("db error", err);
+    if (err.code === "PROTOCOL_CONNECTION_LOST") {
+        // Connection to the MySQL server is usually
+        db.connect((err) => {
+            if (err) throw err;
+            console.log("Database connected");
+        }); // lost due to either server restart, or a
+    } else {
+        // connnection idle timeout (the wait_timeout
+        throw err; // server variable configures this)
+    }
+});
 app.use("/", usersRouter);
 app.use("/admin", adminRouter);
 
