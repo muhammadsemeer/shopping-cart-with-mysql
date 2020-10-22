@@ -42,13 +42,13 @@ db.connect((err) => {
 });
 db.on("error", (err) => {
     console.log("db error", err);
-    if (err === "PROTOCOL_CONNECTION_LOST") {
+    if (err) {
         connect();
         // Connection to the MySQL server is usually
         // lost due to either server restart, or a
     } else {
         // connnection idle timeout (the wait_timeout
-        throw err; // server variable configures this)
+        connect();
     }
 });
 
