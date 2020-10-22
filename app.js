@@ -7,7 +7,7 @@ var hbs = require("express-handlebars");
 var fileUpload = require("express-fileupload");
 var db = require("./config/connection");
 var session = require("express-session");
-
+var cors = require("cors");
 var adminRouter = require("./routes/admin");
 var usersRouter = require("./routes/users");
 
@@ -31,6 +31,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 app.use(fileUpload());
 app.use(session({ secret: "key", cookie: { maxAge: 2592000000 } }));
+app.use(cors({}));
 var connect = require("./config/reconnect");
 db.connect((err) => {
     if (err) {

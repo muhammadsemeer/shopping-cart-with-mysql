@@ -17,7 +17,7 @@ const connection = () => {
     con.on("error", (err) => {
         console.log("db error", err);
         if (err.code === "PROTOCOL_CONNECTION_LOST") {
-            connect();
+            connection();
             // Connection to the MySQL server is usually
             // lost due to either server restart, or a
         } else {

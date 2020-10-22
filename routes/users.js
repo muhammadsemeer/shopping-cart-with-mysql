@@ -75,7 +75,10 @@ router.get("/cart", verfiylogin, async (req, res) => {
                 product = response.result;
             }
         });
-    let total = await userHelpers.getTotalAmountCart(req.session.user.userid);
+    let total;
+    if (product) {
+        total = await userHelpers.getTotalAmountCart(req.session.user.userid);
+    }
     res.render("user/cart", { product, user, count, total });
 });
 
