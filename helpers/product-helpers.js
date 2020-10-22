@@ -1,6 +1,4 @@
-const { reject, resolve } = require("promise");
 var db = require("../config/connection");
-const { ORDER_TABLE } = require("../config/tables");
 var tables = require("../config/tables");
 module.exports = {
     addProduct: (product, images, callback) => {

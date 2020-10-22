@@ -10,7 +10,6 @@ var session = require("express-session");
 
 var adminRouter = require("./routes/admin");
 var usersRouter = require("./routes/users");
-const { commit } = require("./config/connection");
 
 var app = express();
 // view engine setup
@@ -32,28 +31,26 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 app.use(fileUpload());
 app.use(session({ secret: "key", cookie: { maxAge: 2592000000 } }));
-const connection = () => {
-    db.connect((err) => {
-        if (err) {
-            console.log("error when connecting to db:", err.code);
-            setTimeout(connection, 100);
-        } else {
-            console.log("Database connected");
-        }
-    });
-    db.on("error", (err) => {
-        console.log("db error", err);
-        if (err) {
-            connection();
-            // Connection to the MySQL server is usually
-            // lost due to either server restart, or a
-        } else {
-            // connnection idle timeout (the wait_timeout
-            throw err; // server variable configures this)
-        }
-    });
-};
-connection();
+var connect = require("./config/reconnect");
+db.connect((err) => {
+    if (err) {
+        console.log("error when connecting to db:");
+        setTimeout(connect, 1000);
+    } else {
+        console.log("Database connected", db.threadId);
+    }
+});
+db.on("error", (err) => {
+    console.log("db error", err);
+    if (err === 'PROTOCOL_CONNECTION_LOST') {
+        connect();
+        // Connection to the MySQL server is usually
+        // lost due to either server restart, or a
+    } else {
+        // connnection idle timeout (the wait_timeout
+        throw err; // server variable configures this)
+    }
+});
 
 app.use("/", usersRouter);
 app.use("/admin", adminRouter);
