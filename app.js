@@ -8,6 +8,7 @@ var fileUpload = require("express-fileupload");
 var db = require("./config/connection");
 var session = require("express-session");
 var cors = require("cors");
+var timeout = require('connect-timeout')
 var adminRouter = require("./routes/admin");
 var usersRouter = require("./routes/users");
 
@@ -32,13 +33,18 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use(fileUpload());
 app.use(session({ secret: "key", cookie: { maxAge: 2592000000 } }));
 app.use(cors({}));
+app.use(timeout('10s'))
+app.use(haltOnTimedout)
+function haltOnTimedout (req, res, next) {
+  if (!req.timedout) next()
+}
 var connect = require("./config/reconnect");
-db.connect((err) => {
+db.getConnection((err) => {
     if (err) {
         console.log("error when connecting to db:", err.code);
         setTimeout(connect, 1000);
     } else {
-        console.log("Database connected", db.threadId);
+        console.log("Database connected");
     }
 });
 db.on("error", (err) => {
