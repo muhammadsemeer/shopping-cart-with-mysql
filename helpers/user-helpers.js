@@ -124,7 +124,7 @@ module.exports = {
                 if (error) {
                     if (
                         error.sqlMessage ===
-                        `Table 'shopping.t${userIdstring}' doesn't exist`
+                        `Table '${process.env.DB}.t${userIdstring}' doesn't exist`
                     ) {
                         response.status = false;
                         resolve(response);
@@ -151,7 +151,7 @@ module.exports = {
                 if (error) {
                     if (
                         error.sqlMessage ===
-                        `Table 'shopping.t${userIdstring}' doesn't exist`
+                        `Table '${process.env.DB}.t${userIdstring}' doesn't exist`
                     ) {
                         resolve(0);
                     } else {
