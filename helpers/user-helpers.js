@@ -70,12 +70,13 @@ module.exports = {
         let userIdstring = userId.toString();
         let prodIdint = parseInt(prodId);
         return new Promise(async (resolve, reject) => {
+            console.log(process.env.DB);
             var sql = `select * from t${userIdstring}`;
             await db.query(sql, (error, result) => {
                 if (error) {
                     if (
                         error.sqlMessage ===
-                        `Table ${process.env.DB}.t${userIdstring}' doesn't exist`
+                        `Table '${process.env.DB}.t${userIdstring}' doesn't exist`
                     ) {
                         sql = `create table t${userIdstring} (prodID bigint,quantity int)`;
                         db.query(sql, (error, result) => {
