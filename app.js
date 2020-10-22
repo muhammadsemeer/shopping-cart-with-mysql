@@ -34,7 +34,7 @@ app.use(session({ secret: "key", cookie: { maxAge: 2592000000 } }));
 var connect = require("./config/reconnect");
 db.connect((err) => {
     if (err) {
-        console.log("error when connecting to db:");
+        console.log("error when connecting to db:", err.code);
         setTimeout(connect, 1000);
     } else {
         console.log("Database connected", db.threadId);
@@ -42,7 +42,7 @@ db.connect((err) => {
 });
 db.on("error", (err) => {
     console.log("db error", err);
-    if (err === 'PROTOCOL_CONNECTION_LOST') {
+    if (err === "PROTOCOL_CONNECTION_LOST") {
         connect();
         // Connection to the MySQL server is usually
         // lost due to either server restart, or a

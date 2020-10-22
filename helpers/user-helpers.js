@@ -1,7 +1,6 @@
 var db = require("../config/connection");
 var tables = require("../config/tables");
 var bcrypt = require("bcrypt");
-const { reject } = require("promise");
 module.exports = {
     doSignup: (userData) => {
         var { name, email, password } = userData;
