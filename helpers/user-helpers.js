@@ -1,6 +1,7 @@
 var db = require("../config/connection");
 var tables = require("../config/tables");
 var bcrypt = require("bcrypt");
+require("dotenv").config();
 module.exports = {
     doSignup: (userData) => {
         var { name, email, password } = userData;
@@ -74,7 +75,7 @@ module.exports = {
                 if (error) {
                     if (
                         error.sqlMessage ===
-                        `Table 'shopping.t${userIdstring}' doesn't exist`
+                        `Table ${process.env.DB}.t${userIdstring}' doesn't exist`
                     ) {
                         sql = `create table t${userIdstring} (prodID bigint,quantity int)`;
                         db.query(sql, (error, result) => {
@@ -205,7 +206,7 @@ module.exports = {
                 if (result.length > 0) {
                     resolve(result[0].total);
                 } else {
-                    resolve()
+                    resolve();
                 }
             });
         });
