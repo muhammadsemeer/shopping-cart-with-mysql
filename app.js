@@ -33,8 +33,14 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use(fileUpload());
 app.use(session({ secret: "key", cookie: { maxAge: 2592000000 } }));
 app.use(cors({}));
-app.use(timeout('100s'))
+app.use(timeout('1000s'))
+app.use(haltOnTimedout)
 
+// Add your routes here, etc.
+
+function haltOnTimedout (req, res, next) {
+  if (!req.timedout) next()
+}
 var connect = require("./config/reconnect");
 db.getConnection((err) => {
     if (err) {
