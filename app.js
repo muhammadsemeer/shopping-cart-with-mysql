@@ -47,7 +47,7 @@ db.getConnection((err) => {
         console.log("error when connecting to db:", err.code);
         setTimeout(connect, 1000);
     } else {
-        console.log("Database connected");
+        console.log("Database connected", "Connection.js");
     }
 });
 db.on("error", (err) => {

@@ -11,7 +11,7 @@ const connection = () => {
             console.log("error when connecting to db:", err.code);
             setTimeout(connection, 1000);
         } else {
-            console.log("Database connected", con.threadId);
+            console.log("Database connected", "reconnect.js");
         }
     });
     con.on("error", (err) => {
