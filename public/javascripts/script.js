@@ -133,38 +133,19 @@ const deleteCartItem = (prodId, name, price) => {
             });
     }
 };
-const next = (radid, divid) => {
-    var r = [];
-    var radio = document.getElementById(radid).checked;
-    var div = document.getElementById(divid);
-    r[0] = "r1" + divid;
-    r[1] = "r2" + divid;
-    r[2] = "r3" + divid;
-    if (radio) {
-        if (radid === r[0]) {
-            div.style.marginLeft = "0";
-        } else if (radid === r[1]) {
-            div.style.marginLeft = "-100%";
-        } else {
-            div.style.marginLeft = "-200%";
-        }
-    }
-};
-
-const editImage = () => {
-    var yes = document.getElementById("edit-yes");
-    var no = document.getElementById("edit-no");
-    if (yes.checked) {
-        console.log("Ok");
-    } else if (no.checked) {
-        console.log("no");
-    }
-};
 
 const total = (id, quantity, price) => {
-    console.log(id);
-    console.log(quantity);
-    console.log(price);
     var total = parseInt(quantity) * parseInt(price);
     document.getElementById(id).innerHTML = total;
+};
+
+const validation = (event) => {
+    if (event.target[1].value !== event.target[2].value) {
+        event.preventDefault();
+        event.target[2].style.borderColor = "red";
+        document.getElementById("error").innerHTML = "Password Doesnot Match";
+        return false;
+    } else {
+        return true;
+    }
 };

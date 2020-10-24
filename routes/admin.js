@@ -14,48 +14,37 @@ const verifyAdmin = (req, res, next) => {
         res.redirect("/login");
     }
 };
-router.get(
-    "/",
-    /* verifyAdmin ,*/ function (req, res, next) {
-        productHelpers.getAllProducts().then((products) => {
-            res.render("admin/view-products", { products, admin: true });
-        });
-    }
-);
+router.get("/", verifyAdmin, function (req, res, next) {
+    productHelpers.getAllProducts().then((products) => {
+        res.render("admin/view-products", { products, admin: true });
+    });
+});
 
-router.get(
-    "/add-product",
-    /* verifyAdmin ,*/ (req, res) => {
-        res.render("admin/add-products", { admin: true });
-    }
-);
+router.get("/add-product", verifyAdmin, (req, res) => {
+    res.render("admin/add-products", { admin: true });
+});
 
-router.post(
-    "/add-products",
-    /* verifyAdmin ,*/ (req, res) => {
-        productHelpers.addProduct(req.body, req.files.image, (id) => {
-            let image = req.files.image;
-            for (let i = 0; i < image.length; i++) {
-                image[i].mv(
-                    "./public/images/product-images/" +
-                        image[i].name +
-                        id +
-                        ".jpg",
-                    (err) => {
-                        if (err) {
-                            console.log(err);
-                        }
+router.post("/add-products", verifyAdmin, (req, res) => {
+    productHelpers.addProduct(req.body, req.files.image, (id) => {
+        let image = req.files.image;
+        for (let i = 0; i < image.length; i++) {
+            image[i].mv(
+                "./public/images/product-images/" + image[i].name + id + ".jpg",
+                (err) => {
+                    if (err) {
+                        console.log(err);
                     }
-                );
-            }
-            res.redirect("/admin");
-        });
-    }
-);
+                }
+            );
+        }
+        res.redirect("/admin");
+    });
+});
 
 router.get(
     "/delete-product/:id/:image1/:image2/:image3",
-    /* verifyAdmin, */ (req, res) => {
+    verifyAdmin,
+    (req, res) => {
         let prodId = req.params.id;
         let image1 = req.params.image1;
         let image2 = req.params.image2;
@@ -91,21 +80,18 @@ router.get(
         res.render("admin/edit-product", { product, admin: true });
     }
 );
-router.post(
-    "/edit-product/:id",
-    /* verifyAdmin, */ (req, res) => {
-        let id = req.params.id;
-        productHelpers.updateProduct(req.body, id).then((response) => {
-            res.redirect("/admin");
-        });
-    }
-);
+router.post("/edit-product/:id", verifyAdmin, (req, res) => {
+    let id = req.params.id;
+    productHelpers.updateProduct(req.body, id).then((response) => {
+        res.redirect("/admin");
+    });
+});
 
-router.get("/edit-images/:imageno/:prodID/:image", (req, res) => {
+router.get("/edit-images/:imageno/:prodID/:image", verifyAdmin, (req, res) => {
     res.render("admin/edit-image", { image: req.params, admin: true });
 });
 
-router.post("/edit-images/:imageno/:prodID/:image", (req, res) => {
+router.post("/edit-images/:imageno/:prodID/:image", verifyAdmin, (req, res) => {
     let image = req.files.image;
     let id = req.params.prodID;
     let oldImage = req.params.image;
@@ -132,12 +118,12 @@ router.post("/edit-images/:imageno/:prodID/:image", (req, res) => {
         });
     }
 });
-router.get("/allorders", (req, res) => {
+router.get("/allorders", verifyAdmin, (req, res) => {
     productHelpers.getAllOrders().then((response) => {
         res.render("admin/all-orders", { response, admin: true });
     });
 });
-router.get("/allusers", async (req, res) => {
+router.get("/allusers", verifyAdmin, async (req, res) => {
     let users = await productHelpers.getAllUsers();
     res.render("admin/all-users", { users, admin: true });
 });

@@ -1,6 +1,7 @@
 var db = require("../config/connection");
 var tables = require("../config/tables");
 var bcrypt = require("bcrypt");
+const { reject, resolve } = require("promise");
 require("dotenv").config();
 module.exports = {
     doSignup: (userData) => {
@@ -264,6 +265,37 @@ module.exports = {
             db.query(sql, (error, result) => {
                 if (error) throw error;
                 resolve(result[0].total);
+            });
+        });
+    },
+    getProfile: (userId) => {
+        return new Promise(async (resolve, reject) => {
+            var sql = `select userid, name, email from ${tables.USER_TABLE} where userid = ${userId}`;
+            await db.query(sql, (error, result) => {
+                if (error) throw error;
+                resolve(result[0]);
+            });
+        });
+    },
+    updateProfile: (userDetials, userId) => {
+        const { name, email } = userDetials;
+        return new Promise((resolve, reject) => {
+            var sql = `update ${tables.USER_TABLE} set name = '${name}', email = '${email}' where userid = ${userId}`;
+            db.query(sql, (error, result) => {
+                if (error) {
+                    if (error.errno === 1062) {
+                        reject({
+                            message:
+                                "This Mail id is already registered by another user",
+                        });
+                    } else {
+                        reject({
+                            message: "Something Went Wrong Try Again Later!!!!",
+                        });
+                    }
+                } else {
+                    resolve();
+                }
             });
         });
     },

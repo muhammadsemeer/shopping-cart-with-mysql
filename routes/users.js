@@ -150,4 +150,51 @@ router.get("/myorders", verfiylogin, (req, res) => {
     });
 });
 
+router.get("/profile", verfiylogin, (req, res) => {
+    userHelpers.getProfile(req.session.user.userid).then((response) => {
+        res.render("user/profile", {
+            userDetails: response,
+            user: req.session.user,
+        });
+    });
+});
+router.get("/profile/edit", (req, res) => {
+    res.redirect("/profile");
+});
+router.get("/profile/edit/:id", verfiylogin, async (req, res) => {
+    if (req.session.user.userid === parseInt(req.params.id)) {
+        let userDetails = await userHelpers.getProfile(parseInt(req.params.id));
+        console.log(userDetails);
+        res.render("user/edit-profile", {
+            userDetails,
+            error: req.session.updateErr,
+            user: req.session.user,
+        });
+        req.session.updateErr = null;
+    } else {
+        res.redirect("/");
+    }
+});
+router.post("/profile/edit", verfiylogin, (req, res) => {
+    userHelpers
+        .updateProfile(req.body, req.session.user.userid)
+        .then((response) => {
+            res.redirect("/profile");
+        })
+        .catch((error) => {
+            req.session.updateErr = error.message;
+            res.redirect("/profile/edit/" + req.session.user.userid);
+        });
+});
+router.get("/change-password/:id", verfiylogin, (req, res) => {
+    if (req.session.user.userid === parseInt(req.params.id)) {
+        res.render("user/change-password", { user: req.session.user });
+    } else {
+        res.redirect("/");
+    }
+});
+router.post("/change-password", verfiylogin, (req, res) => {
+    userHelpers.changePassword(req.body);
+});
+
 module.exports = router;

@@ -84,7 +84,7 @@ module.exports = {
     },
     getAllUsers: () => {
         return new Promise(async (resolve, reject) => {
-            var sql = `select userid, name, email from ${tables.USER_TABLE}`;
+            var sql = `select userid, name, email from ${tables.USER_TABLE} where not admin = 1`;
             db.query(sql, (error, result) => {
                 if (error) throw error;
                 resolve(result);

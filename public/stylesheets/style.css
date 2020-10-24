@@ -17,6 +17,7 @@ header {
     top: 0;
     width: 100%;
     padding: 25px;
+    background-color: #000000e8;
     z-index: 10;
     font-family: "Comfortaa", Tahoma, Geneva, Verdana, sans-serif;
 }
@@ -44,6 +45,7 @@ header .navbar {
     margin-right: 15px;
     color: #00a3ff;
     font-size: 18px;
+    cursor: pointer;
 }
 .menu-container {
     width: 100%;
@@ -492,6 +494,51 @@ header .navbar {
     padding: 20px 10px;
     font-size: 16px;
 }
+.profile-container {
+    width: 100%;
+    height: 85vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: "Montserrat";
+}
+.profile-container .myprofile {
+    width: 450px;
+    height: 400px;
+    background-color: #0a0a0a;
+    padding: 25px;
+}
+.myprofile h1 {
+    color: #00a3ff;
+    font-weight: bold;
+    font-size: 32px;
+    line-height: 64px;
+}
+.myprofile .details {
+    width: 100%;
+    display: grid;
+    margin: 15px 0;
+    grid-template-columns: 30px auto;
+    padding: 15px;
+}
+.details i,
+.details p {
+    word-break: break-all;
+    font-size: 18px;
+    line-height: 40px;
+    color: #00a3ff;
+}
+.myprofile a {
+    text-decoration: none;
+    display: inline-block;
+    min-width: 100px;
+    text-align: center;
+    border-radius: 50px;
+    background-color: #00a3ff;
+    color: #fff;
+    padding: 15px;
+    border-radius: 50px;
+}
 @media (max-width: 990px) {
     .nav-links {
         display: none;
@@ -596,6 +643,12 @@ header .navbar {
     .order-status p,
     .delivery-details p {
         font-size: 18px;
+    }
+}
+@media (max-width: 450px) {
+    .profile-container .myprofile {
+        width: 320px;
+        padding: 15px 10px;
     }
 }
 @media (max-width: 410px) {

@@ -3,18 +3,23 @@
   <a href="/">
     All Products
   </a>
-  <a href="#">
+  {{#if user.admin}}
+  <a href="/admin">
+    Admin Panel
+  </a>
+  {{/if}}
+  <a href="/profile">
     Account
   </a>
   <a href="/myorders">
     My Orders
   </a>
-  <a id="logout-mobile" href="/logout">
+  <a id="logout-mobile" href="/logout" onclick="return confirm('Do You Want to logout ?')">
     Logout
   </a>
 </div>
 <header>
-  <div class="navbar">
+  <div class=" navbar">
     <a href="/" class="logo">
       Shopping Cart
     </a>
@@ -25,7 +30,12 @@
         <a href="/myorders">
           My Orders
         </a>
-        <a href="#">
+        {{#if user.admin}}
+        <a href="/admin">
+          Admin Panel
+        </a>
+        {{/if}}
+        <a href="/profile">
           Account
         </a>
         {{else}}
@@ -46,7 +56,7 @@
       </a>
       {{/if}}
       {{#if user}}
-      <a href="/logout" id="logout-normal" class="notification" onclick="return Do You Want to logout ?">
+      <a href="/logout" id="logout-normal" class="notification" onclick="return confirm('Do You Want to logout ?')">
         <span>Logout</span>
       </a>
       {{/if}}
