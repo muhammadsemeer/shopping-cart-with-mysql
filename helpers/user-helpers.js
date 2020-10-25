@@ -1,8 +1,13 @@
 var db = require("../config/connection");
 var tables = require("../config/tables");
 var bcrypt = require("bcrypt");
+var Razorpay = require("razorpay");
 const { reject, resolve } = require("promise");
 require("dotenv").config();
+var instance = new Razorpay({
+    key_id: process.env.RAZORPAY_KEY_ID,
+    key_secret: process.env.RAZORPAY_KEY_SECRET,
+});
 module.exports = {
     doSignup: (userData) => {
         var { name, email, password } = userData;
@@ -215,6 +220,7 @@ module.exports = {
     },
     placeOrder: (orderDetails, userID) => {
         var { address, mobileno, pincode, paymentmethod } = orderDetails;
+        var status = paymentmethod === "COD" ? "Order Placed" : "Pending";
         var userIdstring = userID.toString();
         var orderdate = new Date();
         var deliverydate = new Date();
@@ -226,16 +232,16 @@ module.exports = {
                 result.forEach((data) => {
                     sql = `insert into ${
                         tables.ORDER_TABLE
-                    } (userID, prodID, quantity, orderdate,deliveryaddress, deliverymobileno, deliverydate, payment, pincode) values (${userIdstring},${
+                    } (userID, prodID, quantity, orderdate,deliveryaddress, deliverymobileno, deliverydate, payment, pincode, status) values (${userIdstring},${
                         data.prodID
                     },${
                         data.quantity
-                    },'${orderdate.toDateString()}','${address}',${mobileno},'${deliverydate.toDateString()}','${paymentmethod}',${pincode})`;
+                    },'${orderdate.toDateString()}','${address}',${mobileno},'${deliverydate.toDateString()}','${paymentmethod}',${pincode}, '${status}')`;
                     db.query(sql, (error, result) => {
                         if (error) throw error;
                         sql = `delete from t${userIdstring}`;
-                        db.query(sql, (error, result) => {
-                            resolve();
+                        db.query(sql, (error, result1) => {
+                            resolve(result.insertId);
                         });
                     });
                 });
@@ -296,6 +302,54 @@ module.exports = {
                 } else {
                     resolve();
                 }
+            });
+        });
+    },
+    changePassword: (newpass, userId) => {
+        var { expassword, newpassword, conpassword } = newpass;
+        return new Promise((resolve, reject) => {
+            var sql = `select password from ${tables.USER_TABLE} where userid = ${userId}`;
+            db.query(sql, (error, result) => {
+                if (error) throw error;
+                if (result.length > 0) {
+                    bcrypt
+                        .compare(expassword, result[0].password)
+                        .then(async (status) => {
+                            if (status) {
+                                newpassword = await bcrypt.hash(
+                                    newpassword,
+                                    10
+                                );
+                                sql = `update ${tables.USER_TABLE} set password = '${newpassword}' where userId = ${userId}`;
+                                db.query(sql, (error, result) => {
+                                    if (error) throw error;
+                                    resolve({ status: true });
+                                });
+                            } else {
+                                reject({
+                                    status: false,
+                                    message: "Check Your Current Password",
+                                });
+                            }
+                        });
+                } else {
+                    reject({
+                        status: false,
+                        message: "Something Went Wrong!!!!!!",
+                    });
+                }
+            });
+        });
+    },
+    generateRazorpay: (orderId) => {
+        return new Promise((resolve, reject) => {
+            var options = {
+                amount: 50000, // amount in the smallest currency unit
+                currency: "INR",
+                receipt: "order_rcptid_11",
+            };
+            instance.orders.create(options, (err, order) =>{
+                console.log(order);
             });
         });
     },

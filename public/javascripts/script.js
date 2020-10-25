@@ -134,16 +134,46 @@ const deleteCartItem = (prodId, name, price) => {
     }
 };
 
-const total = (id, quantity, price) => {
-    var total = parseInt(quantity) * parseInt(price);
-    document.getElementById(id).innerHTML = total;
+const placeorder = (event) => {
+    event.preventDefault();
+    var adderss = document.querySelector("input[name=address]").value;
+    var mobileno = document.querySelector("input[name=mobileno]").value;
+    var pincode = document.querySelector("input[name=pincode]").value;
+    var payment = document.querySelectorAll("input[name=paymentmethod]");
+    var paymentmethod = payment[0].checked ? "COD" : "ONLINE";
+    fetch("/place-order", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            address: adderss,
+            mobileno: mobileno,
+            pincode: pincode,
+            paymentmethod: paymentmethod,
+        }),
+    })
+        .then((res) => res.json())
+        .then((res) => {
+            if (res.status) {
+                alert("Order Placed Sucessfully");
+            } else {
+                window.location = "/login";
+            }
+        });
 };
 
 const validation = (event) => {
     if (event.target[1].value !== event.target[2].value) {
-        event.preventDefault();
         event.target[2].style.borderColor = "red";
         document.getElementById("error").innerHTML = "Password Doesnot Match";
+        return false;
+    } else if (
+        (event.target[0].value === event.target[1].value) ===
+        event.target[2].value
+    ) {
+        document.getElementById("error").innerHTML =
+            "Current Password and New Password is Same";
         return false;
     } else {
         return true;

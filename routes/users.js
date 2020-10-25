@@ -119,13 +119,25 @@ router.get("/place-order", verfiylogin, async (req, res) => {
     res.render("user/place-order", { total, user, count });
 });
 
-router.post("/place-order", verfiylogin, async (req, res) => {
-    let total = await userHelpers.getTotalAmountCart(req.session.user.userid);
-    userHelpers
-        .placeOrder(req.body, req.session.user.userid, total)
-        .then(() => {
-            res.redirect("/myorders");
-        });
+router.post("/place-order", async (req, res) => {
+    if (req.session.user) {
+        let total = await userHelpers.getTotalAmountCart(
+            req.session.user.userid
+        );
+        userHelpers
+            .placeOrder(req.body, req.session.user.userid, total)
+            .then((orderId) => {
+                if (req.body.paymentmethod === "COD") {
+                    res.json({ status: true });
+                } else {
+                    userHelpers.generateRazorpay(orderId).then((response) => {
+                        
+                    });
+                }
+            });
+    } else {
+        res.json({ status: false });
+    }
 });
 
 router.get("/myorders", verfiylogin, (req, res) => {
@@ -158,22 +170,15 @@ router.get("/profile", verfiylogin, (req, res) => {
         });
     });
 });
-router.get("/profile/edit", (req, res) => {
-    res.redirect("/profile");
-});
-router.get("/profile/edit/:id", verfiylogin, async (req, res) => {
-    if (req.session.user.userid === parseInt(req.params.id)) {
-        let userDetails = await userHelpers.getProfile(parseInt(req.params.id));
-        console.log(userDetails);
-        res.render("user/edit-profile", {
-            userDetails,
-            error: req.session.updateErr,
-            user: req.session.user,
-        });
-        req.session.updateErr = null;
-    } else {
-        res.redirect("/");
-    }
+router.get("/profile/edit/", verfiylogin, async (req, res) => {
+    let userDetails = await userHelpers.getProfile(req.session.user.userid);
+    console.log(userDetails);
+    res.render("user/edit-profile", {
+        userDetails,
+        error: req.session.updateErr,
+        user: req.session.user,
+    });
+    req.session.updateErr = null;
 });
 router.post("/profile/edit", verfiylogin, (req, res) => {
     userHelpers
@@ -186,15 +191,23 @@ router.post("/profile/edit", verfiylogin, (req, res) => {
             res.redirect("/profile/edit/" + req.session.user.userid);
         });
 });
-router.get("/change-password/:id", verfiylogin, (req, res) => {
-    if (req.session.user.userid === parseInt(req.params.id)) {
-        res.render("user/change-password", { user: req.session.user });
-    } else {
-        res.redirect("/");
-    }
+router.get("/change-password/", verfiylogin, (req, res) => {
+    res.render("user/change-password", { user: req.session.user });
 });
 router.post("/change-password", verfiylogin, (req, res) => {
-    userHelpers.changePassword(req.body);
+    userHelpers
+        .changePassword(req.body, req.session.user.userid)
+        .then((response) => {
+            res.redirect("/login");
+        })
+        .catch((error) => {
+            req.session.updateErr = error.message;
+            res.render("user/change-password", {
+                user: req.session.user,
+                error: req.session.updateErr,
+            });
+            req.session.updateErr = null;
+        });
 });
 
 module.exports = router;
