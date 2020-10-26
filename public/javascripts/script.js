@@ -155,8 +155,14 @@ const placeorder = (event) => {
     })
         .then((res) => res.json())
         .then((res) => {
-            if (res.status) {
+            if (res.status === "Placed") {
                 alert("Order Placed Sucessfully");
+                window.location = "/myorders";
+            } else if (res.status === "Pending") {
+                alert(
+                    "Your Order is Pending Complete the Payment to the Place Order"
+                );
+                window.location = "/myorders";
             } else {
                 window.location = "/login";
             }
@@ -179,3 +185,74 @@ const validation = (event) => {
         return true;
     }
 };
+
+const payOnline = (orderId, amount, paymentmethod) => {
+    fetch(`/payment?orderId=${orderId}&amount=${amount}`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+    })
+        .then((res) => res.json())
+        .then((res) => {
+            razorpayPayment(res, paymentmethod);
+        });
+};
+
+function razorpayPayment(res, method) {
+    var options = {
+        key: res.key, // Enter the Key ID generated from the Dashboard
+        amount: res.response.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+        currency: "INR",
+        name: "Galaxieon Shopping",
+        description: "Transfer Your Money Securly",
+        image: "https://example.com/your_logo",
+        order_id: res.response.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+        handler: function (response) {
+            verifyPayment(response, res.response, method);
+        },
+        prefill: {
+            name: "",
+            email: "",
+            contact: "",
+        },
+        notes: {
+            address: "Razorpay Corporate Office",
+        },
+        theme: {
+            color: "#003AFF",
+        },
+    };
+    var rzp1 = new Razorpay(options);
+    rzp1.on("payment.failed", function (response) {
+        alert(response.error.code);
+        alert(response.error.description);
+        alert(response.error.source);
+        alert(response.error.step);
+        alert(response.error.reason);
+        alert(response.error.metadata);
+    });
+    rzp1.open();
+}
+
+function verifyPayment(payment, order, method) {
+    fetch("/verifyPayment", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            payment,
+            order,
+            method: method,
+        }),
+    })
+        .then((res) => res.json())
+        .then((res) => {
+            if (res.status) {
+                alert("Payment SucessFully");
+            } else {
+                alert("Payment Failed Try Again Later");
+            }
+        });
+}

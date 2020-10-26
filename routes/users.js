@@ -1,4 +1,3 @@
-const { response } = require("express");
 var express = require("express");
 var router = express.Router();
 var productHelpers = require("../helpers/product-helpers");
@@ -128,11 +127,9 @@ router.post("/place-order", async (req, res) => {
             .placeOrder(req.body, req.session.user.userid, total)
             .then((orderId) => {
                 if (req.body.paymentmethod === "COD") {
-                    res.json({ status: true });
+                    res.json({ status: "Placed" });
                 } else {
-                    userHelpers.generateRazorpay(orderId).then((response) => {
-                        
-                    });
+                    res.json({ status: "Pending" });
                 }
             });
     } else {
@@ -210,4 +207,52 @@ router.post("/change-password", verfiylogin, (req, res) => {
         });
 });
 
+router.post("/payment", (req, res) => {
+    if (req.session.user) {
+        userHelpers
+            .generateRazorpay(req.query.orderId, req.query.amount)
+            .then((response) => {
+                // userHelpers.getOrderUser(req.query.orderId).then((response) => {
+                // });
+                require("dotenv").config();
+                res.json({ response, key: process.env.RAZORPAY_KEY_ID });
+            });
+    }
+});
+
+router.post("/verifyPayment", (req, res) => {
+    console.log(req.body);
+    userHelpers
+        .verifyPayment(req.body.payment)
+        .then((response) => {
+            userHelpers
+                .changePaymentStatus(req.body.order.receipt, req.body.method)
+                .then((response) => {
+                    console.log("Success");
+                    res.json({ status: true });
+                });
+        })
+        .catch((err) => {
+            console.log("fail");
+            res.json({ status: false });
+        });
+});
+
+router.post("/check", (req, res) => {
+    require("dotenv").config();
+    const crypto = require("crypto");
+    var payment = req.body;
+    var hmac = crypto.createHmac("sha256", process.env.RAZORPAY_KEY_SECRET);
+    hmac.update(
+        payment.razorpay_order_id + "|" + payment.razorpay_payment_id,
+        process.env.RAZORPAY_KEY_SECRET
+    );
+    hmac = hmac.digest("hex");
+    console.log(hmac);
+    if (hmac === payment.razorpay_signature) {
+        console.log("OK");
+    } else {
+        console.log("Error");
+    }
+});
 module.exports = router;

@@ -20,6 +20,9 @@
             <p>Ordered Date: {{this.orderdate}}</p>
             <p>Payment Method: {{this.payment}}</p>
             <p>Current Status: {{this.status}}</p>
+            {{!-- {{#if this.paid}} --}}
+            <button onclick="payOnline('{{this.orderID}}',{{this.total}},'{{this.payment}}')">Pay Online</button>
+            {{!-- {{/if}} --}}
             <button>Cancel Order</button>
         </div>
         <div class="delivery-details">

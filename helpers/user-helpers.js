@@ -207,11 +207,12 @@ module.exports = {
     getTotalAmountCart: (userId) => {
         let userIdstring = userId.toString();
         return new Promise(async (resolve, reject) => {
-            var sql = `select ${tables.PRODCUT_TABLE}.price*t${userIdstring}.quantity as total from ${tables.PRODCUT_TABLE} inner join t${userIdstring} on ${tables.PRODCUT_TABLE}.productid = t${userIdstring}.prodID`;
+            var sql = `select sum(${tables.PRODCUT_TABLE}.price*t${userIdstring}.quantity) as total from ${tables.PRODCUT_TABLE} inner join t${userIdstring} on ${tables.PRODCUT_TABLE}.productid = t${userIdstring}.prodID`;
             db.query(sql, (error, result) => {
                 if (error) throw error;
                 if (result.length > 0) {
                     resolve(result[0].total);
+                    console.log(result);
                 } else {
                     resolve();
                 }
@@ -240,8 +241,8 @@ module.exports = {
                     db.query(sql, (error, result) => {
                         if (error) throw error;
                         sql = `delete from t${userIdstring}`;
-                        db.query(sql, (error, result1) => {
-                            resolve(result.insertId);
+                        db.query(sql, (error, result) => {
+                            resolve();
                         });
                     });
                 });
@@ -341,16 +342,67 @@ module.exports = {
             });
         });
     },
-    generateRazorpay: (orderId) => {
+    generateRazorpay: (orderId, total) => {
         return new Promise((resolve, reject) => {
             var options = {
-                amount: 50000, // amount in the smallest currency unit
+                amount: total * 100, // amount in the smallest currency unit
                 currency: "INR",
-                receipt: "order_rcptid_11",
+                receipt: orderId.toString(),
             };
-            instance.orders.create(options, (err, order) =>{
-                console.log(order);
+            instance.orders.create(options, (err, order) => {
+                console.log("NewOrder", order);
+                resolve(order);
             });
+        });
+    },
+    verifyPayment: (payment) => {
+        console.log("Payment Verifying");
+        return new Promise((resolve, reject) => {
+            console.log(payment);
+            const crypto = require("crypto");
+            var hmac = crypto.createHmac(
+                "sha256",
+                process.env.RAZORPAY_KEY_SECRET
+            );
+            hmac.update(
+                payment.razorpay_order_id + "|" + payment.razorpay_payment_id,
+                process.env.RAZORPAY_KEY_SECRET
+            );
+            hmac = hmac.digest("hex");
+            console.log(hmac);
+            if (hmac === payment.razorpay_signature) {
+                resolve(true);
+                console.log("OK");
+            } else {
+                reject();
+                console.log("Error");
+            }
+        });
+    },
+    changePaymentStatus: (orderId, method) => {
+        console.log("Updating Status....");
+        return new Promise((resolve, reject) => {
+            if (method === "ONLINE") {
+                var sql = `update ${
+                    tables.ORDER_TABLE
+                } set status = 'Order Placed', paid = 1 where orderID = ${parseInt(
+                    orderId
+                )}`;
+                db.query(sql, (error, result) => {
+                    if (error) throw error;
+                    resolve();
+                });
+            } else {
+                var sql = `update ${
+                    tables.ORDER_TABLE
+                } set payment = "ONLINE", status = 'Order Placed', paid = 1 where orderID = ${parseInt(
+                    orderId
+                )}`;
+                db.query(sql, (error, result) => {
+                    if (error) throw error;
+                    resolve();
+                });
+            }
         });
     },
 };
