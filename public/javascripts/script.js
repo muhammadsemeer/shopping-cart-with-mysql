@@ -12,7 +12,10 @@ const viewImage = (event, image) => {
 };
 
 const addToCart = (prodId, name) => {
-    fetch("/add-to-cart/" + prodId, {
+    var src = document.getElementById(prodId).src;
+    var variant = src.split("/")
+    console.log("Called");
+    fetch("/add-to-cart/" + prodId + "/" + variant[5], {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
@@ -42,12 +45,12 @@ const changeImage = (imageId, prodId) => {
     image.src = imageURL;
 };
 
-const quantity = (prodId, func, price) => {
-    let quantity = document.getElementById(prodId).innerHTML;
+const quantity = (prodId, func, price, variant) => {
+    let quantity = document.getElementById(prodId+variant).innerHTML;
     if (quantity == 1 && func === "dnc") {
         var co = confirm("Do You Want To Delete The Product ?");
         if (co) {
-            fetch("/delete-cart-product/" + prodId, {
+            fetch("/delete-cart-product/" + prodId + "/" + variant, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -56,7 +59,7 @@ const quantity = (prodId, func, price) => {
                 .then((res) => res.json())
                 .then((response) => {
                     if (response.status) {
-                        var id = "t" + prodId;
+                        var id = "t" + prodId + variant;
                         let item = document.getElementById(id);
                         item.style.display = "none";
                         let count = document.getElementById("cartCount")
@@ -72,7 +75,7 @@ const quantity = (prodId, func, price) => {
                 });
         }
     } else {
-        fetch("/change-quantity/" + prodId + "/" + func, {
+        fetch("/change-quantity/" + prodId + "/" + func + "/" + variant, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -81,9 +84,9 @@ const quantity = (prodId, func, price) => {
             .then((res) => res.json())
             .then((response) => {
                 if (response) {
-                    let quantity = document.getElementById(prodId).innerHTML;
+                    let quantity = document.getElementById(prodId+variant).innerHTML;
                     quantity = parseInt(quantity) + 1;
-                    document.getElementById(prodId).innerHTML = quantity;
+                    document.getElementById(prodId+variant).innerHTML = quantity;
                     let count = document.getElementById("cartCount").innerHTML;
                     count = parseInt(count) + 1;
                     document.getElementById("cartCount").innerHTML = count;
@@ -91,9 +94,9 @@ const quantity = (prodId, func, price) => {
                     total = parseFloat(total) + parseFloat(price);
                     document.getElementById("total").innerHTML = total;
                 } else {
-                    let quantity = document.getElementById(prodId).innerHTML;
+                    let quantity = document.getElementById(prodId+variant).innerHTML;
                     quantity = parseInt(quantity) - 1;
-                    document.getElementById(prodId).innerHTML = quantity;
+                    document.getElementById(prodId+variant).innerHTML = quantity;
                     let count = document.getElementById("cartCount").innerHTML;
                     count = parseInt(count) - 1;
                     document.getElementById("cartCount").innerHTML = count;
@@ -105,10 +108,10 @@ const quantity = (prodId, func, price) => {
     }
 };
 
-const deleteCartItem = (prodId, name, price) => {
+const deleteCartItem = (prodId, name, price, variant) => {
     var con = confirm("Do You Want to delete " + name + " from Your Cart");
     if (con) {
-        fetch("/delete-cart-product/" + prodId, {
+        fetch("/delete-cart-product/" + prodId + "/" +variant, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -117,10 +120,10 @@ const deleteCartItem = (prodId, name, price) => {
             .then((res) => res.json())
             .then((response) => {
                 if (response.status) {
-                    var id = "t" + prodId;
+                    var id = "t" + prodId + variant;
                     let item = document.getElementById(id);
                     item.style.display = "none";
-                    let quantity = document.getElementById(prodId).innerHTML;
+                    let quantity = document.getElementById(prodId+variant).innerHTML;
                     let count = document.getElementById("cartCount").innerHTML;
                     count = parseInt(count) - parseInt(quantity);
                     document.getElementById("cartCount").innerHTML = count;

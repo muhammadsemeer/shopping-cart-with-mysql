@@ -72,11 +72,11 @@ module.exports = {
             });
         });
     },
-    addToCart: (prodId, userId) => {
+    addToCart: (prod, userId) => {
+        var { id, variant } = prod;
         let userIdstring = userId.toString();
-        let prodIdint = parseInt(prodId);
+        let prodIdint = parseInt(id);
         return new Promise(async (resolve, reject) => {
-            console.log(process.env.DB);
             var sql = `select * from t${userIdstring}`;
             await db.query(sql, (error, result) => {
                 if (error) {
@@ -84,10 +84,10 @@ module.exports = {
                         error.sqlMessage ===
                         `Table '${process.env.DB}.t${userIdstring}' doesn't exist`
                     ) {
-                        sql = `create table t${userIdstring} (prodID bigint,quantity int)`;
+                        sql = `create table t${userIdstring} (prodID bigint,quantity int, variant text)`;
                         db.query(sql, (error, result) => {
                             if (error) throw error;
-                            sql = `insert into t${userIdstring} values(${prodIdint} , 1)`;
+                            sql = `insert into t${userIdstring} values(${prodIdint} , 1, '${variant}')`;
                             db.query(sql, (error, result) => {
                                 if (error) throw error;
                                 resolve();
@@ -95,25 +95,45 @@ module.exports = {
                         });
                     }
                 } else if (result.length > 0) {
-                    sql = `update t${userIdstring} set quantity = quantity + 1 where prodID = ${prodId}`;
+                    sql = `select * from t${userIdstring} where prodID = ${prodIdint} and variant ='${variant}'`;
                     db.query(sql, (error, result) => {
                         if (error) throw error;
-                        if (
-                            result.message ===
-                            "(Rows matched: 0  Changed: 0  Warnings: 0"
-                        ) {
-                            // console.log("1");
-                            sql = `insert into t${userIdstring} values(${prodIdint} , 1)`;
+                        if (result.length > 0) {
+                            if (result[0].variant === variant) {
+                                sql = `update t${userIdstring} set quantity = quantity + 1 where prodID = ${prodIdint} and variant = '${variant}'`;
+                                db.query(sql, (error, result) => {
+                                    if (error) throw error;
+                                    console.log(result);
+                                    resolve();
+                                });
+                            }
+                        } else {
+                            sql = `insert into t${userIdstring} values(${prodIdint} , 1, '${variant}')`;
                             db.query(sql, (error, result) => {
                                 if (error) throw error;
                                 resolve();
                             });
-                        } else {
-                            resolve();
                         }
                     });
+                    // sql = `update t${userIdstring} set quantity = quantity + 1 where prodID = ${prodIdint}`;
+                    // db.query(sql, (error, result) => {
+                    //     if (error) throw error;
+                    //     console.log(result);
+                    //     if (
+                    //         result.message ===
+                    //         "(Rows matched: 0  Changed: 0  Warnings: 0"
+                    //     ) {
+                    //         sql = `insert into t${userIdstring} values(${prodIdint} , 1, '${variant}')`;
+                    //         db.query(sql, (error, result) => {
+                    //             if (error) throw error;
+                    //             resolve();
+                    //         });
+                    //     } else {
+                    //         resolve();
+                    //     }
+                    // });
                 } else {
-                    sql = `insert into t${userIdstring} values(${prodIdint} , 1)`;
+                    sql = `insert into t${userIdstring} values(${prodIdint} , 1, '${variant}')`;
                     db.query(sql, (error, result) => {
                         if (error) throw error;
                         resolve();
@@ -174,18 +194,18 @@ module.exports = {
             });
         });
     },
-    changeQuantity: (prodId, func, userId) => {
+    changeQuantity: (prodId, func, variant, userId) => {
         return new Promise(async (resolve, reject) => {
             let userIdstring = userId.toString();
             let prodIdint = parseInt(prodId);
             if (func === "inc") {
-                var sql = `update t${userIdstring} set quantity = quantity + 1 where prodID = ${prodIdint}`;
+                var sql = `update t${userIdstring} set quantity = quantity + 1 where prodID = ${prodIdint} and variant = '${variant}'`;
                 db.query(sql, (error, result) => {
                     if (error) throw error;
                     resolve(true);
                 });
             } else {
-                var sql = `update t${userIdstring} set quantity = quantity - 1 where prodID = ${prodIdint}`;
+                var sql = `update t${userIdstring} set quantity = quantity - 1 where prodID = ${prodIdint} and variant = '${variant}'`;
                 db.query(sql, (error, result) => {
                     if (error) throw error;
                     resolve(false);
@@ -193,11 +213,11 @@ module.exports = {
             }
         });
     },
-    deleteCartProduct: (prodId, userId) => {
+    deleteCartProduct: (prodId, variant, userId) => {
         return new Promise(async (resolve, reject) => {
             let userIdstring = userId.toString();
             let prodIdint = parseInt(prodId);
-            var sql = `delete from t${userIdstring} where prodID = ${prodIdint}`;
+            var sql = `delete from t${userIdstring} where prodID = ${prodIdint} and variant = '${variant}'`;
             db.query(sql, (error, result) => {
                 if (error) throw error;
                 resolve();
@@ -212,7 +232,6 @@ module.exports = {
                 if (error) throw error;
                 if (result.length > 0) {
                     resolve(result[0].total);
-                    console.log(result);
                 } else {
                     resolve();
                 }
@@ -233,11 +252,10 @@ module.exports = {
                 result.forEach((data) => {
                     sql = `insert into ${
                         tables.ORDER_TABLE
-                    } (userID, prodID, quantity, orderdate,deliveryaddress, deliverymobileno, deliverydate, payment, pincode, status) values (${userIdstring},${
+                    } (userID, prodID, quantity, variant, orderdate, deliveryaddress, deliverymobileno, deliverydate, payment, pincode, status) values (${userIdstring},${
                         data.prodID
-                    },${
-                        data.quantity
-                    },'${orderdate.toDateString()}','${address}',${mobileno},'${deliverydate.toDateString()}','${paymentmethod}',${pincode}, '${status}')`;
+                    },${data.quantity}, '${data.variant}',
+                    '${orderdate.toDateString()}','${address}',${mobileno},'${deliverydate.toDateString()}','${paymentmethod}',${pincode}, '${status}')`;
                     db.query(sql, (error, result) => {
                         if (error) throw error;
                         sql = `delete from t${userIdstring}`;

@@ -66,7 +66,7 @@ module.exports = {
     },
     getAllOrders: () => {
         return new Promise(async (resolve, reject) => {
-            var sql = `select ${tables.ORDER_TABLE}.orderID, ${tables.ORDER_TABLE}.quantity, ${tables.ORDER_TABLE}.orderdate, 
+            var sql = `select ${tables.ORDER_TABLE}.orderID, ${tables.ORDER_TABLE}.quantity, ${tables.ORDER_TABLE}.variant ,${tables.ORDER_TABLE}.orderdate, 
             ${tables.ORDER_TABLE}.deliveryaddress, ${tables.ORDER_TABLE}.deliverymobileno, ${tables.ORDER_TABLE}.deliverydate, 
             ${tables.ORDER_TABLE}.payment, ${tables.ORDER_TABLE}.pincode, ${tables.PRODCUT_TABLE}.productid, ${tables.PRODCUT_TABLE}.name as productname, 
             ${tables.PRODCUT_TABLE}.brand, ${tables.PRODCUT_TABLE}.category, ${tables.PRODCUT_TABLE}.price, ${tables.PRODCUT_TABLE}.image1, 

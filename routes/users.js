@@ -81,10 +81,10 @@ router.get("/cart", verfiylogin, async (req, res) => {
     res.render("user/cart", { product, user, count, total });
 });
 
-router.get("/add-to-cart/:id", (req, res) => {
+router.get("/add-to-cart/:id/:variant", (req, res) => {
     if (req.session.user) {
         userHelpers
-            .addToCart(req.params.id, req.session.user.userid)
+            .addToCart(req.params, req.session.user.userid)
             .then((response) => {
                 res.json({ status: true });
             });
@@ -92,17 +92,17 @@ router.get("/add-to-cart/:id", (req, res) => {
         res.json({ status: false });
     }
 });
-router.get("/change-quantity/:id/:func", (req, res) => {
+router.get("/change-quantity/:id/:func/:variant", (req, res) => {
     userHelpers
-        .changeQuantity(req.params.id, req.params.func, req.session.user.userid)
+        .changeQuantity(req.params.id, req.params.func, req.params.variant, req.session.user.userid)
         .then((response) => {
             res.json(response);
         });
 });
 
-router.get("/delete-cart-product/:id", (req, res) => {
+router.get("/delete-cart-product/:id/:variant", (req, res) => {
     userHelpers
-        .deleteCartProduct(req.params.id, req.session.user.userid)
+        .deleteCartProduct(req.params.id, req.params.variant,req.session.user.userid)
         .then((response) => {
             res.json({ status: true });
         });
@@ -120,11 +120,8 @@ router.get("/place-order", verfiylogin, async (req, res) => {
 
 router.post("/place-order", async (req, res) => {
     if (req.session.user) {
-        let total = await userHelpers.getTotalAmountCart(
-            req.session.user.userid
-        );
         userHelpers
-            .placeOrder(req.body, req.session.user.userid, total)
+            .placeOrder(req.body, req.session.user.userid)
             .then((orderId) => {
                 if (req.body.paymentmethod === "COD") {
                     res.json({ status: "Placed" });
@@ -212,8 +209,6 @@ router.post("/payment", (req, res) => {
         userHelpers
             .generateRazorpay(req.query.orderId, req.query.amount)
             .then((response) => {
-                // userHelpers.getOrderUser(req.query.orderId).then((response) => {
-                // });
                 require("dotenv").config();
                 res.json({ response, key: process.env.RAZORPAY_KEY_ID });
             });
@@ -228,31 +223,12 @@ router.post("/verifyPayment", (req, res) => {
             userHelpers
                 .changePaymentStatus(req.body.order.receipt, req.body.method)
                 .then((response) => {
-                    console.log("Success");
                     res.json({ status: true });
                 });
         })
         .catch((err) => {
-            console.log("fail");
             res.json({ status: false });
         });
 });
 
-router.post("/check", (req, res) => {
-    require("dotenv").config();
-    const crypto = require("crypto");
-    var payment = req.body;
-    var hmac = crypto.createHmac("sha256", process.env.RAZORPAY_KEY_SECRET);
-    hmac.update(
-        payment.razorpay_order_id + "|" + payment.razorpay_payment_id,
-        process.env.RAZORPAY_KEY_SECRET
-    );
-    hmac = hmac.digest("hex");
-    console.log(hmac);
-    if (hmac === payment.razorpay_signature) {
-        console.log("OK");
-    } else {
-        console.log("Error");
-    }
-});
 module.exports = router;
