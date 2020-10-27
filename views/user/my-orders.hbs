@@ -20,16 +20,20 @@
             <p>Ordered Date: {{this.orderdate}}</p>
             <p>Payment Method: {{this.payment}}</p>
             <p>Current Status: {{this.status}}</p>
-            {{!-- {{#if this.paid}} --}}
+            {{#ifNotPaid this.paid}}
             <button onclick="payOnline('{{this.orderID}}',{{this.total}},'{{this.payment}}')">Pay Online</button>
-            {{!-- {{/if}} --}}
+            {{else}}
+            <h1>Payment Details</h1>
+            <p>Payment Id: {{this.razorpaypaymentid}}</p>
+            <p>Razorpay_Order Id: {{this.razorpaypaymentid}}</p>
+            {{/ifNotPaid}}
             <button>Cancel Order</button>
         </div>
         <div class="delivery-details">
             <h1>Delivery Details</h1>
             <p>Delivery Date: {{this.deliverydate}}</p>
             <p>Adresss: {{this.deliveryaddress}}</p>
-            <p>Pin Code / Zip Code: {{this.pincode}}</p>
+            <p>Pin Code: {{this.pincode}}</p>
             <p>Mobile No: {{this.deliverymobileno}}</p>
         </div>
     </div>

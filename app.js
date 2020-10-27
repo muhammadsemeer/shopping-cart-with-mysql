@@ -21,6 +21,22 @@ app.engine(
         defaultLayout: "layout",
         layoutsDir: __dirname + "/views/layout/",
         partialsDir: __dirname + "/views/partials/",
+        helpers: {
+            ifNotPaid: function (payment, options) {
+                if (payment === 0) {
+                    return options.fn(this);
+                } else {
+                    return options.inverse(this);
+                }
+            },
+            ifPaid: function (payment, options) {
+                if (payment === 1) {
+                    return options.fn(this);
+                } else {
+                    return options.inverse(this);
+                }
+            },
+        },
     })
 );
 app.use(logger("dev"));
@@ -33,8 +49,8 @@ app.use(session({ secret: "key", cookie: { maxAge: 2592000000 } }));
 
 // Add your routes here, etc.
 
-function haltOnTimedout (req, res, next) {
-  if (!req.timedout) next()
+function haltOnTimedout(req, res, next) {
+    if (!req.timedout) next();
 }
 var connect = require("./config/reconnect");
 db.getConnection((err) => {

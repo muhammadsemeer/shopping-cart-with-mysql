@@ -94,7 +94,12 @@ router.get("/add-to-cart/:id/:variant", (req, res) => {
 });
 router.get("/change-quantity/:id/:func/:variant", (req, res) => {
     userHelpers
-        .changeQuantity(req.params.id, req.params.func, req.params.variant, req.session.user.userid)
+        .changeQuantity(
+            req.params.id,
+            req.params.func,
+            req.params.variant,
+            req.session.user.userid
+        )
         .then((response) => {
             res.json(response);
         });
@@ -102,7 +107,11 @@ router.get("/change-quantity/:id/:func/:variant", (req, res) => {
 
 router.get("/delete-cart-product/:id/:variant", (req, res) => {
     userHelpers
-        .deleteCartProduct(req.params.id, req.params.variant,req.session.user.userid)
+        .deleteCartProduct(
+            req.params.id,
+            req.params.variant,
+            req.session.user.userid
+        )
         .then((response) => {
             res.json({ status: true });
         });
@@ -221,7 +230,11 @@ router.post("/verifyPayment", (req, res) => {
         .verifyPayment(req.body.payment)
         .then((response) => {
             userHelpers
-                .changePaymentStatus(req.body.order.receipt, req.body.method)
+                .changePaymentStatus(
+                    req.body.order.receipt,
+                    req.body.payment,
+                    req.body.method
+                )
                 .then((response) => {
                     res.json({ status: true });
                 });

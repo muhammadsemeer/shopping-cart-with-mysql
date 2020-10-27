@@ -13,7 +13,7 @@ const viewImage = (event, image) => {
 
 const addToCart = (prodId, name) => {
     var src = document.getElementById(prodId).src;
-    var variant = src.split("/")
+    var variant = src.split("/");
     console.log("Called");
     fetch("/add-to-cart/" + prodId + "/" + variant[5], {
         method: "GET",
@@ -46,7 +46,7 @@ const changeImage = (imageId, prodId) => {
 };
 
 const quantity = (prodId, func, price, variant) => {
-    let quantity = document.getElementById(prodId+variant).innerHTML;
+    let quantity = document.getElementById(prodId + variant).innerHTML;
     if (quantity == 1 && func === "dnc") {
         var co = confirm("Do You Want To Delete The Product ?");
         if (co) {
@@ -84,9 +84,12 @@ const quantity = (prodId, func, price, variant) => {
             .then((res) => res.json())
             .then((response) => {
                 if (response) {
-                    let quantity = document.getElementById(prodId+variant).innerHTML;
+                    let quantity = document.getElementById(prodId + variant)
+                        .innerHTML;
                     quantity = parseInt(quantity) + 1;
-                    document.getElementById(prodId+variant).innerHTML = quantity;
+                    document.getElementById(
+                        prodId + variant
+                    ).innerHTML = quantity;
                     let count = document.getElementById("cartCount").innerHTML;
                     count = parseInt(count) + 1;
                     document.getElementById("cartCount").innerHTML = count;
@@ -94,9 +97,12 @@ const quantity = (prodId, func, price, variant) => {
                     total = parseFloat(total) + parseFloat(price);
                     document.getElementById("total").innerHTML = total;
                 } else {
-                    let quantity = document.getElementById(prodId+variant).innerHTML;
+                    let quantity = document.getElementById(prodId + variant)
+                        .innerHTML;
                     quantity = parseInt(quantity) - 1;
-                    document.getElementById(prodId+variant).innerHTML = quantity;
+                    document.getElementById(
+                        prodId + variant
+                    ).innerHTML = quantity;
                     let count = document.getElementById("cartCount").innerHTML;
                     count = parseInt(count) - 1;
                     document.getElementById("cartCount").innerHTML = count;
@@ -111,7 +117,7 @@ const quantity = (prodId, func, price, variant) => {
 const deleteCartItem = (prodId, name, price, variant) => {
     var con = confirm("Do You Want to delete " + name + " from Your Cart");
     if (con) {
-        fetch("/delete-cart-product/" + prodId + "/" +variant, {
+        fetch("/delete-cart-product/" + prodId + "/" + variant, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -123,7 +129,8 @@ const deleteCartItem = (prodId, name, price, variant) => {
                     var id = "t" + prodId + variant;
                     let item = document.getElementById(id);
                     item.style.display = "none";
-                    let quantity = document.getElementById(prodId+variant).innerHTML;
+                    let quantity = document.getElementById(prodId + variant)
+                        .innerHTML;
                     let count = document.getElementById("cartCount").innerHTML;
                     count = parseInt(count) - parseInt(quantity);
                     document.getElementById("cartCount").innerHTML = count;
@@ -228,12 +235,7 @@ function razorpayPayment(res, method) {
     };
     var rzp1 = new Razorpay(options);
     rzp1.on("payment.failed", function (response) {
-        alert(response.error.code);
-        alert(response.error.description);
-        alert(response.error.source);
-        alert(response.error.step);
-        alert(response.error.reason);
-        alert(response.error.metadata);
+        alert(response.error.reason + " on " + response.error.step + " Payment ID = " + response.error.metadata.payment_id + " Order ID = " + response.error.metadata.order_id);
     });
     rzp1.open();
 }
@@ -254,8 +256,10 @@ function verifyPayment(payment, order, method) {
         .then((res) => {
             if (res.status) {
                 alert("Payment SucessFully");
+                location.reload();
             } else {
                 alert("Payment Failed Try Again Later");
+                location.reload();
             }
         });
 }

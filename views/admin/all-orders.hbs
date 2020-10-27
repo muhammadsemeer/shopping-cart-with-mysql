@@ -20,6 +20,11 @@
             <p>ID: {{this.userid}}</p>
             <p>Name: {{this.username}}</p>
             <p>Email: {{this.email}}</p>
+            {{#ifPaid this.paid}}
+            <h1>Payment Details</h1>
+            <p>Payment Id: {{this.razorpaypaymentid}}</p>
+            <p>Razorpay_Order Id: {{this.razorpaypaymentid}}</p>
+            {{/ifPaid}}
         </div>
         <div class="delivery-details">
             <h1>Delivery Details</h1>

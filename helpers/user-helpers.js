@@ -368,13 +368,11 @@ module.exports = {
                 receipt: orderId.toString(),
             };
             instance.orders.create(options, (err, order) => {
-                console.log("NewOrder", order);
                 resolve(order);
             });
         });
     },
     verifyPayment: (payment) => {
-        console.log("Payment Verifying");
         return new Promise((resolve, reject) => {
             console.log(payment);
             const crypto = require("crypto");
@@ -390,20 +388,18 @@ module.exports = {
             console.log(hmac);
             if (hmac === payment.razorpay_signature) {
                 resolve(true);
-                console.log("OK");
             } else {
                 reject();
-                console.log("Error");
             }
         });
     },
-    changePaymentStatus: (orderId, method) => {
-        console.log("Updating Status....");
+    changePaymentStatus: (orderId, payment, method) => {
+        const { razorpay_payment_id, razorpay_order_id } = payment;
         return new Promise((resolve, reject) => {
             if (method === "ONLINE") {
                 var sql = `update ${
                     tables.ORDER_TABLE
-                } set status = 'Order Placed', paid = 1 where orderID = ${parseInt(
+                } set status = 'Order Placed', paid = 1,razorpayorderid = '${razorpay_order_id}',razorpaypaymentid = '${razorpay_payment_id}' where orderID = ${parseInt(
                     orderId
                 )}`;
                 db.query(sql, (error, result) => {
@@ -413,7 +409,7 @@ module.exports = {
             } else {
                 var sql = `update ${
                     tables.ORDER_TABLE
-                } set payment = "ONLINE", status = 'Order Placed', paid = 1 where orderID = ${parseInt(
+                } set payment = "ONLINE", status = 'Order Placed', paid = 1,razorpayorderid = '${razorpay_order_id}',razorpaypaymentid = '${razorpay_payment_id}' where orderID = ${parseInt(
                     orderId
                 )}`;
                 db.query(sql, (error, result) => {
