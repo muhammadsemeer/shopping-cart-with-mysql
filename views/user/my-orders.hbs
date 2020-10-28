@@ -1,7 +1,7 @@
 {{#if product}}
 <div class="order-container">
     {{#each product}}
-    <div class="my-orders">
+    <div class="my-orders" id="{{this.orderID}}">
         <div class="image-container">
             <img src="./images/product-images/{{this.variant}}" alt="">
         </div>
@@ -27,7 +27,7 @@
             <p>Payment Id: {{this.razorpaypaymentid}}</p>
             <p>Razorpay_Order Id: {{this.razorpaypaymentid}}</p>
             {{/ifNotPaid}}
-            <button>Cancel Order</button>
+            <button onclick="cancelOrder({{this.orderID}})">Cancel Order</button>
         </div>
         <div class="delivery-details">
             <h1>Delivery Details</h1>
@@ -38,12 +38,6 @@
         </div>
     </div>
     {{/each}}
-</div>
-<div class="checkout">
-    <div>
-        <h3>Total Amuont</h3>
-        <h3>Rs. <span id="total">{{total}}</span></h3>
-    </div>
 </div>
 {{else}}
 <div class="empty">

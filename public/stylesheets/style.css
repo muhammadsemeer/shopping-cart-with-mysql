@@ -10,7 +10,7 @@ body {
     margin: 0;
 }
 .body {
-    margin-top: 75px;
+    margin-top: 80px;
 }
 header {
     position: fixed;
@@ -121,6 +121,36 @@ header .navbar {
     padding: 15px;
     border-radius: 50px;
 }
+.search {
+    width: 100%;
+    margin-top: 15px;
+    display: flex;
+    justify-content: center;
+}
+.search form {
+    width: 100%;
+}
+.search .input {
+    display: flex;
+}
+.search input[type="text"] {
+    width: 90%;
+    color: #00a3ff;
+    font-family: "Comfortaa", Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #0a0a0a;
+    padding: 10px;
+    border: 1px solid #020202;
+    font-size: 20px;
+}
+.search button {
+    width: 10%;
+    background-color: #242424;
+    color: #0a0a0a;
+    font-size: 20px;
+    border: 1px solid #020202;
+    border: none;
+    outline: none;
+}
 .container {
     width: 100%;
     margin: 0 0 50px 0;
@@ -137,6 +167,9 @@ header .navbar {
     display: flex;
     justify-content: space-between;
 }
+.container .card-container:last-child {
+    margin-bottom: 150px;
+}
 
 .container .card-content {
     padding: 50px;
@@ -144,7 +177,7 @@ header .navbar {
 
 .card-content h1 {
     font-weight: 900;
-    font-size: 72px;
+    font-size: 40px;
     color: #00a3ff;
 }
 .card-content p {
@@ -154,7 +187,6 @@ header .navbar {
 }
 
 .card-container .img-container img {
-    width: 350px;
     height: 350px;
 }
 
@@ -176,7 +208,6 @@ header .navbar {
 }
 .variants img {
     margin-right: 25px;
-    width: 100px;
     height: 100px;
     transition: 0.25s ease-in-out;
 }
@@ -212,6 +243,7 @@ header .navbar {
 }
 .login-container {
     display: flex;
+    margin-top: 100px;
     justify-content: center;
     align-items: center;
     min-height: 90vh;
@@ -294,7 +326,7 @@ header .navbar {
     font-weight: bold;
 }
 .cart {
-    margin: 0 0 100px 0;
+    margin: 150px 0 100px 0;
     display: flex;
     justify-content: space-evenly;
     font-family: "Montserrat";
@@ -311,16 +343,16 @@ header .navbar {
     position: relative;
 }
 .cart-container .cart-image img {
-    width: 200px;
     height: 200px;
+    margin: 25px;
 }
 .cart-admin-image {
     display: flex;
 }
 
 .cart-container .cart-admin-image img {
-    width: 75px;
     height: 75px;
+    margin: 10px;
 }
 .cart-container .cart-content {
     align-self: center;
@@ -409,6 +441,7 @@ header .navbar {
 }
 .order-container {
     width: 100%;
+    margin: 150px 0;
     display: flex;
     margin-bottom: 100px;
     justify-content: center;
@@ -427,8 +460,8 @@ header .navbar {
     padding: 50px 0;
 }
 .my-orders .image-container img {
-    width: 150px;
     height: 150px;
+    margin: 25px;
 }
 .order-details,
 .order-status,
@@ -468,7 +501,7 @@ header .navbar {
 }
 .all-users {
     width: 90%;
-    margin: 100px auto;
+    margin: 150px auto;
     overflow-x: auto;
     font-family: "Comfortaa";
 }
@@ -540,6 +573,23 @@ header .navbar {
     padding: 15px;
     border-radius: 50px;
 }
+.page-not-found {
+    margin-top: 150px;
+    width: 100%;
+    height: 65vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+.page-not-found img {
+    height: 300px;
+}
+.page-not-found h1 {
+    font-weight: bold;
+    font-size: 45px;
+    font-family: "Comfortaa", 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
 @media (max-width: 990px) {
     .nav-links {
         display: none;
@@ -552,7 +602,7 @@ header .navbar {
         width: auto;
     }
     .container .card-container {
-        margin: 50px 0;
+        margin: 75px 0;
         padding: 0px;
         height: auto;
         justify-content: center;
@@ -566,7 +616,6 @@ header .navbar {
         font-size: 30px;
     }
     .card-container .img-container img {
-        width: 250px;
         height: 250px;
     }
 }
@@ -589,6 +638,12 @@ header .navbar {
         text-align: center;
     }
 }
+@media (max-width: 768px) {
+    .card-content h1 {
+        max-width: 300px;
+        word-break: break-all;
+    }
+}
 @media (max-width: 650px) {
     .login-form {
         width: 500px;
@@ -599,6 +654,9 @@ header .navbar {
     .login-form h1 {
         padding-top: 0px;
         font-size: 25px;
+    }
+    .card-container .img-container img {
+        height: 225px;
     }
 }
 @media (max-width: 580px) {
@@ -628,7 +686,6 @@ header .navbar {
     }
     .variants img {
         margin: 0 10px;
-        width: 75px;
         height: 75px;
     }
     .order-details h1,
@@ -644,6 +701,9 @@ header .navbar {
     .order-status p,
     .delivery-details p {
         font-size: 18px;
+    }
+    .card-container .img-container img {
+        height: 200px;
     }
 }
 @media (max-width: 450px) {
@@ -661,6 +721,9 @@ header .navbar {
         margin-right: 10px;
         font-size: 15px;
     }
+    .search {
+        padding-right: 10px;
+    }
 }
 @media (max-width: 400px) {
     .login-form {
@@ -670,11 +733,9 @@ header .navbar {
         width: 310px;
     }
     .cart-container .cart-image img {
-        width: 150px;
         height: 150px;
     }
     .cart-container .cart-admin-image img {
-        width: 50px;
         height: 50px;
     }
     .cart-content h1 {
@@ -689,5 +750,8 @@ header .navbar {
     .navigation-manual,
     .navigation-auto {
         left: 25px;
+    }
+    .card-container .img-container img {
+        height: 150px;
     }
 }

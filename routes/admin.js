@@ -16,7 +16,7 @@ const verifyAdmin = (req, res, next) => {
 };
 router.get("/", verifyAdmin, function (req, res, next) {
     productHelpers.getAllProducts().then((products) => {
-        res.render("admin/view-products", { products, admin: true });
+        res.render("admin/view-products", { products, admin: req.session.user.admin });
     });
 });
 
@@ -77,7 +77,7 @@ router.get(
     /* verifyAdmin,*/ async (req, res) => {
         let prodId = req.params.id;
         let product = await productHelpers.getproductDetails(prodId);
-        res.render("admin/edit-product", { product, admin: true });
+        res.render("admin/edit-product", { product, admin: req.session.user.admin });
     }
 );
 router.post("/edit-product/:id", verifyAdmin, (req, res) => {
@@ -88,7 +88,7 @@ router.post("/edit-product/:id", verifyAdmin, (req, res) => {
 });
 
 router.get("/edit-images/:imageno/:prodID/:image", verifyAdmin, (req, res) => {
-    res.render("admin/edit-image", { image: req.params, admin: true });
+    res.render("admin/edit-image", { image: req.params, admin: req.session.user.admin });
 });
 
 router.post("/edit-images/:imageno/:prodID/:image", verifyAdmin, (req, res) => {
@@ -120,12 +120,21 @@ router.post("/edit-images/:imageno/:prodID/:image", verifyAdmin, (req, res) => {
 });
 router.get("/allorders", verifyAdmin, (req, res) => {
     productHelpers.getAllOrders().then((response) => {
-        res.render("admin/all-orders", { response, admin: true });
+        res.render("admin/all-orders", { response, admin: req.session.user.admin });
     });
 });
 router.get("/allusers", verifyAdmin, async (req, res) => {
     let users = await productHelpers.getAllUsers();
-    res.render("admin/all-users", { users, admin: true });
+    res.render("admin/all-users", { users, admin: req.session.user.admin });
+});
+router.get("/search", async (req, res) => {
+    productHelpers.searchProduct(req.query).then((products) => {
+        res.render("admin/view-products", {
+            products,
+            admin: req.session.user.admin,
+            query: req.query.query,
+        });
+    });
 });
 
 module.exports = router;

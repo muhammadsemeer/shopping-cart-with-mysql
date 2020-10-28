@@ -21,7 +21,7 @@
 <header>
   <div class=" navbar">
     <a href="/" class="logo">
-      Shopping Cart
+      Galaxieon Cart
     </a>
     <div>
       <div class="nav-links">
@@ -72,5 +72,13 @@
       </div>
       {{/if}}
     </div>
+  </div>
+  <div class="search">
+    <form action="/search" method="GET">
+      <div class="input">
+        <input type="text" name="query" placeholder="Serach.." value="{{query}}" required>
+        <button type="submit"><i class="fas fa-search"></i></button>
+      </div>
+    </form>
   </div>
 </header>

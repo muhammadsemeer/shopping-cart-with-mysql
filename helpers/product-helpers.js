@@ -91,4 +91,14 @@ module.exports = {
             });
         });
     },
+    searchProduct: (serach) => {
+        return new Promise((resolve, reject) => {
+            const { query } = serach;
+            var sql = `select * from ${tables.PRODCUT_TABLE} where MATCH(name,brand,category) AGAINST ('${query}')`;
+            db.query(sql, (error, result) => {
+                if (error) throw error;
+                resolve(result);
+            });
+        });
+    },
 };

@@ -1,3 +1,4 @@
+const { response } = require("express");
 var express = require("express");
 var router = express.Router();
 var productHelpers = require("../helpers/product-helpers");
@@ -147,9 +148,6 @@ router.get("/myorders", verfiylogin, (req, res) => {
     let arr = {};
     userHelpers.getMyOrders(req.session.user.userid).then(async (response) => {
         var product = response.result;
-        let total = await userHelpers.getTotalAmountOrder(
-            req.session.user.userid
-        );
         let user = req.session.user;
         let count;
         if (user) {
@@ -158,7 +156,6 @@ router.get("/myorders", verfiylogin, (req, res) => {
         res.render("user/my-orders", {
             product,
             arr,
-            total,
             user,
             count,
         });
@@ -238,6 +235,33 @@ router.post("/verifyPayment", (req, res) => {
                 .then((response) => {
                     res.json({ status: true });
                 });
+        })
+        .catch((err) => {
+            res.json({ status: false });
+        });
+});
+
+router.get("/search", async (req, res) => {
+    let user = req.session.user;
+    let count = 0;
+    if (user) {
+        count = await userHelpers.getCartCount(req.session.user.userid);
+    }
+    userHelpers.searchProduct(req.query).then((products) => {
+        res.render("user/view-products", {
+            products,
+            user,
+            count,
+            query: req.query.query,
+        });
+    });
+});
+
+router.post("/cancelorder/:id", verfiylogin, (req, res) => {
+    userHelpers
+        .cancelOrder(req.params.id)
+        .then((response) => {
+            res.json({ status: true });
         })
         .catch((err) => {
             res.json({ status: false });

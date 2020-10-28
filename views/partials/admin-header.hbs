@@ -48,4 +48,12 @@
       <i class="fas fa-bars" onclick="toggleMenu()"></i>
     </div>
   </div>
+   <div class="search">
+    <form action="/admin/search" method="GET">
+      <div class="input">
+        <input type="text" name="query" placeholder="Serach.." value="{{query}}" required>
+        <button type="submit"><i class="fas fa-search"></i></button>
+      </div>
+    </form>
+  </div>
 </header>

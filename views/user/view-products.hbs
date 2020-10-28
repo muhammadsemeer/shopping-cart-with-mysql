@@ -1,3 +1,4 @@
+{{#if products}}
 <div class="container">
   {{#each products}}
   <div class="card-container">
@@ -33,3 +34,10 @@
   </div>
   {{/each}}
 </div>
+{{else}}
+<div class="empty">
+    <h1>
+        No Products Found
+    </h1>
+</div>
+{{/if}}

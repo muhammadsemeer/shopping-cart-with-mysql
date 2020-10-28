@@ -1,20 +1,21 @@
+{{#if products}}
 <div class="cart">
   {{#each products}}
   <div class="cart-container">
     <div class="cart-admin-image">
       <div class="slide" id="{{this.productid}}">
         <a href="/admin/edit-images/image1/{{this.productid}}/{{this.image1}}">
-          <img src="./images/product-images/{{this.image1}}{{this.productid}}.jpg" />
+          <img src="/images/product-images/{{this.image1}}{{this.productid}}.jpg" />
         </a>
       </div>
       <div class="slide">
         <a href="/admin/edit-images/image2/{{this.productid}}/{{this.image2}}">
-          <img src="./images/product-images/{{this.image2}}{{this.productid}}.jpg" />
+          <img src="/images/product-images/{{this.image2}}{{this.productid}}.jpg" />
         </a>
       </div>
       <div class="slide">
         <a href="/admin/edit-images/image2/{{this.productid}}/{{this.image3}}">
-          <img src="./images/product-images/{{this.image3}}{{this.productid}}.jpg" />
+          <img src="/images/product-images/{{this.image3}}{{this.productid}}.jpg" />
         </a>
       </div>
     </div>
@@ -51,3 +52,10 @@
   </div>
   {{/each}}
 </div>
+{{else}}
+<div class="empty">
+    <h1>
+        No Products Found
+    </h1>
+</div>
+{{/if}}

@@ -115,23 +115,6 @@ module.exports = {
                             });
                         }
                     });
-                    // sql = `update t${userIdstring} set quantity = quantity + 1 where prodID = ${prodIdint}`;
-                    // db.query(sql, (error, result) => {
-                    //     if (error) throw error;
-                    //     console.log(result);
-                    //     if (
-                    //         result.message ===
-                    //         "(Rows matched: 0  Changed: 0  Warnings: 0"
-                    //     ) {
-                    //         sql = `insert into t${userIdstring} values(${prodIdint} , 1, '${variant}')`;
-                    //         db.query(sql, (error, result) => {
-                    //             if (error) throw error;
-                    //             resolve();
-                    //         });
-                    //     } else {
-                    //         resolve();
-                    //     }
-                    // });
                 } else {
                     sql = `insert into t${userIdstring} values(${prodIdint} , 1, '${variant}')`;
                     db.query(sql, (error, result) => {
@@ -284,15 +267,6 @@ module.exports = {
             });
         });
     },
-    getTotalAmountOrder: (userId) => {
-        return new Promise(async (resolve, reject) => {
-            var sql = `select sum(${tables.PRODCUT_TABLE}.price*${tables.ORDER_TABLE}.quantity) as total from ${tables.PRODCUT_TABLE} inner join ${tables.ORDER_TABLE} on ${tables.ORDER_TABLE}.userID = ${userId} and ${tables.PRODCUT_TABLE}.productid = ${tables.ORDER_TABLE}.prodID`;
-            db.query(sql, (error, result) => {
-                if (error) throw error;
-                resolve(result[0].total);
-            });
-        });
-    },
     getProfile: (userId) => {
         return new Promise(async (resolve, reject) => {
             var sql = `select userid, name, email from ${tables.USER_TABLE} where userid = ${userId}`;
@@ -417,6 +391,28 @@ module.exports = {
                     resolve();
                 });
             }
+        });
+    },
+    searchProduct: (serach) => {
+        return new Promise((resolve, reject) => {
+            const { query } = serach;
+            var sql = `select * from ${tables.PRODCUT_TABLE} where MATCH(name,brand,category) AGAINST ('${query}')`;
+            db.query(sql, (error, result) => {
+                if (error) throw error;
+                resolve(result);
+            });
+        });
+    },
+    cancelOrder: (orderId) => {
+        return new Promise((resolve, reject) => {
+            var sql = `delete from ${tables.ORDER_TABLE} where orderID = ${orderId}`;
+            db.query(sql, (error, result) => {
+                if (error) {
+                    reject();
+                } else {
+                    resolve();
+                }
+            });
         });
     },
 };

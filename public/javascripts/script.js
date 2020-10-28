@@ -235,7 +235,15 @@ function razorpayPayment(res, method) {
     };
     var rzp1 = new Razorpay(options);
     rzp1.on("payment.failed", function (response) {
-        alert(response.error.reason + " on " + response.error.step + " Payment ID = " + response.error.metadata.payment_id + " Order ID = " + response.error.metadata.order_id);
+        alert(
+            response.error.reason +
+                " on " +
+                response.error.step +
+                " Payment ID = " +
+                response.error.metadata.payment_id +
+                " Order ID = " +
+                response.error.metadata.order_id
+        );
     });
     rzp1.open();
 }
@@ -263,3 +271,22 @@ function verifyPayment(payment, order, method) {
             }
         });
 }
+const cancelOrder = (orderId) => {
+    fetch("/cancelorder/" + orderId, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+    })
+        .then((res) => res.json())
+        .then((res) => {
+            if (res.status) {
+                alert(
+                    "Your Order is Canceled if your paid money online the money will refund to account within 5-7 working days"
+                );
+                document.getElementById(orderId).style.display = "none";
+            } else {
+                alert("Something Went Wrong!!!!! Try Again Later..");
+            }
+        });
+};
