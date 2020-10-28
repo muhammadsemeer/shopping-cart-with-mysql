@@ -216,7 +216,7 @@ function razorpayPayment(res, method) {
         currency: "INR",
         name: "Galaxieon Shopping",
         description: "Transfer Your Money Securly",
-        image: "https://example.com/your_logo",
+        image: "/images/GALAXIEON CART.png",
         order_id: res.response.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
         handler: function (response) {
             verifyPayment(response, res.response, method);
