@@ -396,7 +396,7 @@ module.exports = {
     searchProduct: (serach) => {
         return new Promise((resolve, reject) => {
             const { query } = serach;
-            var sql = `select * from ${tables.PRODCUT_TABLE} where MATCH(name,brand,category) AGAINST ('${query}')`;
+            var sql = `select * from ${tables.PRODCUT_TABLE} where name like '${query}%' or brand like '${query}%' or category like '${query}%'`;
             db.query(sql, (error, result) => {
                 if (error) throw error;
                 resolve(result);
