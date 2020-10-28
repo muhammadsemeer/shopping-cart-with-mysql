@@ -25,7 +25,7 @@
             {{else}}
             <h1>Payment Details</h1>
             <p>Payment Id: {{this.razorpaypaymentid}}</p>
-            <p>Razorpay_Order Id: {{this.razorpaypaymentid}}</p>
+            <p>Razorpay_Order Id: {{this.razorpayorderid}}</p>
             {{/ifNotPaid}}
             <button onclick="cancelOrder({{this.orderID}})">Cancel Order</button>
         </div>
