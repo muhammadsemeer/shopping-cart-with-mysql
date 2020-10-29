@@ -82,10 +82,14 @@ app.use("/admin", adminRouter);
 // });
 
 app.use("*", (req, res) => {
+<<<<<<< HEAD
     res.status(404).render("404.hbs", {
         user: req.session.user,
         admin: req.session.user.admin,
     });
+=======
+    res.status(404).render("404.hbs");
+>>>>>>> deploy
 });
 
 // error handler
